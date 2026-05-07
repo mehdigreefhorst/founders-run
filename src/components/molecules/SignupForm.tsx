@@ -2,22 +2,17 @@
 
 import { useState, type FormEvent } from "react";
 import { cn } from "@/lib/utils";
+import { submitWhatsappSignup, type SignupPayload } from "@/lib/whatsapp-signup";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { toast } from "sonner";
 
-export interface SignupPayload {
-  readonly name: string;
-  readonly email: string;
-  readonly phone: string;
-  readonly what_you_do: string;
-}
+export type { SignupPayload };
 
 interface SignupFormProps {
   readonly className?: string;
-  readonly endpoint?: string;
 }
 
 const initialState: SignupPayload = {
@@ -27,13 +22,7 @@ const initialState: SignupPayload = {
   what_you_do: "",
 };
 
-/**
- * Sign-up form for the WhatsApp group.
- *
- * Posts to the configured endpoint (defaults to /api/apply, which is wired
- * up later to the Supabase Edge Function `save_whatsapp_group_application`).
- */
-export function SignupForm({ className, endpoint = "/api/apply" }: SignupFormProps) {
+export function SignupForm({ className }: SignupFormProps) {
   const [state, setState] = useState<SignupPayload>(initialState);
   const [submitting, setSubmitting] = useState(false);
 
@@ -46,15 +35,12 @@ export function SignupForm({ className, endpoint = "/api/apply" }: SignupFormPro
     setSubmitting(true);
 
     try {
-      const response = await fetch(endpoint, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(state),
-      });
+      const result = await submitWhatsappSignup(state);
 
-      if (!response.ok) {
-        const message = await response.text().catch(() => "");
-        throw new Error(message || `Request failed (${response.status})`);
+      if (!result.ok) {
+        throw new Error(
+          result.error ?? `Request failed (${result.status || "network"})`,
+        );
       }
 
       toast.success("You're on the list. Welcome aboard.", {

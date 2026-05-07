@@ -57,6 +57,17 @@
   --color-editorial-blaze: var(--editorial-blaze);
   --color-editorial-blaze-deep: var(--editorial-blaze-deep);
 
+  /* vintage athletic tokens (landing-4) */
+  --color-vintage-cream: var(--vintage-cream);
+  --color-vintage-cream-soft: var(--vintage-cream-soft);
+  --color-vintage-brick: var(--vintage-brick);
+  --color-vintage-brick-deep: var(--vintage-brick-deep);
+  --color-vintage-cocoa: var(--vintage-cocoa);
+  --color-vintage-cocoa-deep: var(--vintage-cocoa-deep);
+  --color-vintage-crema: var(--vintage-crema);
+
+  --font-varsity: var(--font-varsity);
+
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -92,6 +103,15 @@
   --editorial-ink: oklch(0.14 0 0);              /* near-black ink */
   --editorial-blaze: oklch(0.68 0.22 35);       /* electric orange accent */
   --editorial-blaze-deep: oklch(0.58 0.22 32);  /* deeper hover orange */
+
+  /* === Vintage Athletic palette (landing-4) — pulled from the Luma poster === */
+  --vintage-cream: oklch(0.95 0.025 85);          /* poster paper cream */
+  --vintage-cream-soft: oklch(0.97 0.018 88);     /* lighter paper highlight */
+  --vintage-brick: oklch(0.66 0.165 42);          /* poster headline orange */
+  --vintage-brick-deep: oklch(0.54 0.180 38);     /* darker stamp / press over-ink */
+  --vintage-cocoa: oklch(0.42 0.060 50);          /* warm cocoa brown ink */
+  --vintage-cocoa-deep: oklch(0.30 0.050 45);     /* deepest brown for body */
+  --vintage-crema: oklch(0.85 0.055 75);          /* light coffee crema highlight */
 
   /* === Map shadcn semantics onto brand === */
   --background: var(--cream);
@@ -260,5 +280,52 @@
   }
   .editorial-marquee {
     animation: editorial-marquee 40s linear infinite;
+  }
+
+  /* === Vintage Athletic (landing-4) === */
+  .font-varsity {
+    font-family: var(--font-varsity);
+    letter-spacing: 0;
+  }
+
+  /* Warm paper-stock texture (heavier than .grain so it reads at a glance) */
+  .vintage-paper::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.10;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 240 240' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 0.42  0 0 0 0 0.20  0 0 0 0 0.10  0 0 0 0.5 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)'/%3E%3C/svg%3E");
+  }
+
+  /* Print-press over-ink offset (thin red-orange ghost on the brick text) */
+  .vintage-ink-press {
+    text-shadow:
+      1px 0 0 oklch(0.66 0.165 42 / 0.35),
+      -1px 0 0 oklch(0.30 0.050 45 / 0.25);
+  }
+
+  /* Marquee for varsity strip */
+  @keyframes vintage-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .vintage-marquee {
+    animation: vintage-marquee 28s linear infinite;
+  }
+
+  /* Double-rule divider (varsity stripe) */
+  .vintage-double-rule {
+    background-image: linear-gradient(
+      to bottom,
+      currentColor 0,
+      currentColor 2px,
+      transparent 2px,
+      transparent 6px,
+      currentColor 6px,
+      currentColor 8px
+    );
+    height: 8px;
   }
 }

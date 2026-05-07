@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Fraunces, Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { Bungee_Inline, Fraunces, Inter_Tight, JetBrains_Mono } from "next/font/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
@@ -19,6 +19,13 @@ const interTight = Inter_Tight({
 const jetbrainsMono = JetBrains_Mono({
   variable: "--font-mono",
   subsets: ["latin"],
+  display: "swap",
+});
+
+const bungeeInline = Bungee_Inline({
+  variable: "--font-varsity",
+  subsets: ["latin"],
+  weight: "400",
   display: "swap",
 });
 
@@ -45,7 +52,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html
       lang="en"
-      className={`${fraunces.variable} ${interTight.variable} ${jetbrainsMono.variable} h-full antialiased`}
+      className={`${fraunces.variable} ${interTight.variable} ${jetbrainsMono.variable} ${bungeeInline.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
         {children}

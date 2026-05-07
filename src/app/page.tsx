@@ -6,7 +6,7 @@ import { SunMark } from "@/components/atoms/SunMark";
 import { Card } from "@/components/ui/card";
 
 interface VariantEntry {
-  readonly slug: string;
+  readonly slug: `/${string}`;
   readonly title: string;
   readonly description: string;
   readonly status: "ready" | "coming";
@@ -15,22 +15,31 @@ interface VariantEntry {
 const variants: ReadonlyArray<VariantEntry> = [
   {
     slug: "/landing-1",
-    title: "Dawn / atmospheric (reference)",
+    title: "Dawn / atmospheric",
     description:
-      "Sunrise gradient hero, Fraunces serif, soft warm palette, scroll-revealed story beats.",
+      "Sunrise gradient hero, Fraunces serif, soft warm palette. Apple-style scroll reveals on the story beats.",
     status: "ready",
   },
   {
     slug: "/landing-2",
-    title: "Variation 2",
-    description: "Coming next — to be designed by a sub-agent.",
-    status: "coming",
+    title: "Editorial / sport magazine",
+    description:
+      "Paper white + electric orange, masthead-style header, big serif headlines, vertical 'COVER STORY' tracker, magazine drop caps.",
+    status: "ready",
   },
   {
     slug: "/landing-3",
-    title: "Variation 3",
-    description: "Coming next — to be designed by a sub-agent.",
-    status: "coming",
+    title: "Brutalist / raw startup",
+    description:
+      "Paper white with hard 2-px black borders, all-mono type, signal-green accents, terminal annotations, ASCII schedule sidebar.",
+    status: "ready",
+  },
+  {
+    slug: "/landing-4",
+    title: "Vintage athletic / running poster",
+    description:
+      "Built around the Founders Run × Coffee Luma poster as the full-bleed hero centerpiece. Cream + brick + cocoa palette, varsity Bungee Inline display, merit-badge event cards, race-bib registration form.",
+    status: "ready",
   },
 ];
 
@@ -48,12 +57,17 @@ export default function VariantIndex() {
 
         <section className="flex flex-col gap-3 max-w-3xl">
           <h1 className="font-display text-balance text-4xl md:text-5xl leading-[1.05] tracking-tight">
-            Three takes on{" "}
-            <span className="italic text-terracotta-deep">{site.brand.name} {site.brand.location}</span>.
+            Four takes on{" "}
+            <span className="italic text-terracotta-deep">
+              {site.brand.name} {site.brand.location}
+            </span>
+            .
           </h1>
           <p className="text-lg text-ink-soft">
             Pick a variation to preview. Each one consumes the same content from{" "}
-            <code className="font-mono text-sm bg-cream-soft px-1.5 py-0.5 rounded">src/config/site.ts</code>{" "}
+            <code className="font-mono text-sm bg-cream-soft px-1.5 py-0.5 rounded">
+              src/config/site.ts
+            </code>{" "}
             and the same atomic component library, so swapping copy is a one-file change.
           </p>
         </section>
@@ -86,7 +100,7 @@ export default function VariantIndex() {
               </div>
               {v.status === "ready" ? (
                 <Link
-                  href={v.slug as `/${string}`}
+                  href={v.slug}
                   className="font-mono text-sm uppercase tracking-widest text-ink hover:text-terracotta-deep whitespace-nowrap"
                 >
                   Open →

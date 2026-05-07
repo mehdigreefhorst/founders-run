@@ -43,6 +43,17 @@ export const site = {
     tagline: "Wake early. Run together. Build something.",
     shortPitch:
       "Every Wednesday at 07:00, founders in Eindhoven meet to run, talk, and build. Coffee after.",
+    /**
+     * The official illustrated poster used across every Luma event and the
+     * WhatsApp group. Featured prominently on /landing-4 (Vintage Athletic).
+     * Replace the file at this path to update the asset everywhere.
+     */
+    poster: {
+      src: "/logo-luma-founders-run.jpeg",
+      alt: "Founders Run and Coffee — Eindhoven",
+      width: 540,
+      height: 810,
+    },
   },
 
   hero: {
@@ -58,7 +69,7 @@ export const site = {
   video: {
     src: "/video/hero.mp4",
     poster: "/video/hero-poster.jpg",
-    youtubeUrl: "https://www.youtube.com/@foundersrun",
+    youtubeUrl: "https://www.youtube.com/@mymehdimoments",
   },
 
   // Carousel images — drop files into /public/images/run/01.jpg ... 06.jpg

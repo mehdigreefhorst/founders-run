@@ -6,39 +6,24 @@ import { site } from "@/config/site";
 import { Button } from "@/components/ui/button";
 import { Reveal } from "@/components/motion/Reveal";
 import { toast } from "sonner";
+import { submitWhatsappSignup, type SignupPayload } from "@/lib/whatsapp-signup";
 
 interface EditorialSignupProps {
   readonly className?: string;
 }
 
-interface SignupState {
-  readonly name: string;
-  readonly email: string;
-  readonly phone: string;
-  readonly whatYouDo: string;
-}
-
-const initialState: SignupState = {
+const initialState: SignupPayload = {
   name: "",
   email: "",
   phone: "",
-  whatYouDo: "",
+  what_you_do: "",
 };
 
-/**
- * Editorial signup — "Subscription Form" framed like a print magazine sub card.
- *
- * Custom form (not the SignupForm molecule) so the field styling matches the
- * editorial vocabulary: hairline rules, no rounded corners, mono labels above
- * the inputs, generous vertical rhythm.
- *
- * Posts to /api/apply (same endpoint as the molecule).
- */
 export function EditorialSignup({ className }: EditorialSignupProps) {
-  const [state, setState] = useState<SignupState>(initialState);
+  const [state, setState] = useState<SignupPayload>(initialState);
   const [submitting, setSubmitting] = useState(false);
 
-  const updateField = <K extends keyof SignupState>(key: K, value: SignupState[K]) =>
+  const updateField = <K extends keyof SignupPayload>(key: K, value: SignupPayload[K]) =>
     setState((prev) => ({ ...prev, [key]: value }));
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -46,14 +31,11 @@ export function EditorialSignup({ className }: EditorialSignupProps) {
     if (submitting) return;
     setSubmitting(true);
     try {
-      const response = await fetch("/api/apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(state),
-      });
-      if (!response.ok) {
-        const message = await response.text().catch(() => "");
-        throw new Error(message || `Request failed (${response.status})`);
+      const result = await submitWhatsappSignup(state);
+      if (!result.ok) {
+        throw new Error(
+          result.error ?? `Request failed (${result.status || "network"})`,
+        );
       }
       toast.success("You're on the list. Welcome aboard.", {
         description: "We'll send the WhatsApp invite by email shortly.",
@@ -175,8 +157,8 @@ export function EditorialSignup({ className }: EditorialSignupProps) {
                 id="ed-what"
                 index="04"
                 label="What do you do?"
-                value={state.whatYouDo}
-                onChange={(v) => updateField("whatYouDo", v)}
+                value={state.what_you_do}
+                onChange={(v) => updateField("what_you_do", v)}
                 placeholder="Founder of … building … for …"
                 multiline
                 required

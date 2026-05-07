@@ -3,19 +3,13 @@
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { site } from "@/config/site";
-
-interface SignupPayload {
-  readonly name: string;
-  readonly email: string;
-  readonly phone: string;
-  readonly whatYouDo: string;
-}
+import { submitWhatsappSignup, type SignupPayload } from "@/lib/whatsapp-signup";
 
 const initialState: SignupPayload = {
   name: "",
   email: "",
   phone: "",
-  whatYouDo: "",
+  what_you_do: "",
 };
 
 const fields: ReadonlyArray<{
@@ -51,7 +45,7 @@ const fields: ReadonlyArray<{
     hint: "// for whatsapp invite",
   },
   {
-    id: "whatYouDo",
+    id: "what_you_do",
     label: "WHAT_YOU_DO",
     placeholder: "Founder of … building … for …",
     type: "textarea",
@@ -59,10 +53,6 @@ const fields: ReadonlyArray<{
   },
 ];
 
-/**
- * Brutalist signup form — hard borders, mono labels, signal-green submit hover.
- * Posts to /api/apply (same endpoint the existing SignupForm uses).
- */
 export function BrutalistSignup() {
   const [state, setState] = useState<SignupPayload>(initialState);
   const [submitting, setSubmitting] = useState(false);
@@ -76,15 +66,12 @@ export function BrutalistSignup() {
     setSubmitting(true);
 
     try {
-      const response = await fetch("/api/apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(state),
-      });
+      const result = await submitWhatsappSignup(state);
 
-      if (!response.ok) {
-        const message = await response.text().catch(() => "");
-        throw new Error(message || `Request failed (${response.status})`);
+      if (!result.ok) {
+        throw new Error(
+          result.error ?? `Request failed (${result.status || "network"})`,
+        );
       }
 
       toast.success("ENTRY_ACCEPTED. Welcome aboard.", {
@@ -104,7 +91,7 @@ export function BrutalistSignup() {
       {/* Header strip */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--paper)]/20 px-6 py-2 font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[var(--paper)]/70 md:px-10">
         <span>FILE: signup.form</span>
-        <span>METHOD: POST · /api/apply</span>
+        <span>METHOD: POST · supabase.fn</span>
         <span className="flex items-center gap-2">
           <span className="size-1.5 rounded-full bg-[var(--signal-green)] animate-pulse" aria-hidden />
           STATUS: <span className="text-[var(--signal-green)]">OPEN</span>
