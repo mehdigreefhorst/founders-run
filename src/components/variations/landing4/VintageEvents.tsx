@@ -75,12 +75,12 @@ function BadgeCard({ event, index }: BadgeCardProps) {
         "hover:shadow-[8px_8px_0_0_var(--vintage-brick-deep)]",
       )}
     >
-      <div className="flex items-start justify-between gap-3 border-b-[2px] border-[var(--vintage-cocoa-deep)]/40 px-5 py-4">
+      <div className="flex items-center justify-between gap-3 border-b-[2px] border-[var(--vintage-cocoa-deep)]/40 px-5 py-4">
         <span className="font-sans text-[0.62rem] font-bold uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
           {c.cardNumberPrefix}&nbsp;{number}
         </span>
-        <span className="inline-flex h-12 w-12 flex-col items-center justify-center rounded-full border-[2px] border-[var(--vintage-brick-deep)] text-[var(--vintage-brick-deep)] font-sans text-[0.55rem] font-black uppercase leading-tight tracking-[0.12em]">
-          <span aria-hidden className="text-[0.55rem]">{c.sealStar}</span>
+        <span className="inline-flex items-center gap-1.5 rounded-full border-[2px] border-[var(--vintage-brick-deep)] bg-[var(--vintage-cream)] px-2.5 py-1 font-sans text-[0.6rem] font-black uppercase tracking-[0.18em] text-[var(--vintage-brick-deep)]">
+          <span aria-hidden>{c.sealStar}</span>
           <span>{c.tagLabels[event.tag]}</span>
         </span>
       </div>

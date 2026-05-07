@@ -94,9 +94,9 @@ export function VintageFooter({ className }: VintageFooterProps) {
           </span>
           <span
             className={cn(
-              "inline-flex h-28 w-28 flex-col items-center justify-center rounded-full",
+              "inline-flex h-32 w-32 flex-col items-center justify-center rounded-full",
               "border-[3px] border-[var(--vintage-brick-deep)] text-[var(--vintage-brick-deep)]",
-              "rotate-[-6deg] font-sans text-[0.6rem] font-black uppercase tracking-[0.18em] leading-tight",
+              "rotate-[-6deg] font-sans text-[0.6rem] font-black uppercase tracking-[0.12em] leading-tight",
             )}
           >
             <span>{c.colophonStamp.line1}</span>

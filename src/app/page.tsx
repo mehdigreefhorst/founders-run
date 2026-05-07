@@ -21,20 +21,6 @@ const variants: ReadonlyArray<VariantEntry> = [
     status: "ready",
   },
   {
-    slug: "/landing-2",
-    title: "Editorial / sport magazine",
-    description:
-      "Paper white + electric orange, masthead-style header, big serif headlines, vertical 'COVER STORY' tracker, magazine drop caps.",
-    status: "ready",
-  },
-  {
-    slug: "/landing-3",
-    title: "Brutalist / raw startup",
-    description:
-      "Paper white with hard 2-px black borders, all-mono type, signal-green accents, terminal annotations, ASCII schedule sidebar.",
-    status: "ready",
-  },
-  {
     slug: "/landing-4",
     title: "Vintage athletic / running poster",
     description:

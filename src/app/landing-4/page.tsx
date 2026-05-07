@@ -15,7 +15,7 @@ import { VintageFooter } from "@/components/variations/landing4/VintageFooter";
  */
 export default function LandingFour() {
   return (
-    <main className="flex flex-col bg-[var(--vintage-cream)] text-[var(--vintage-cocoa-deep)]">
+    <main className="flex flex-col overflow-x-clip bg-[var(--vintage-cream)] text-[var(--vintage-cocoa-deep)]">
       <VintageHeader />
       <VintageHero />
       <VintageStory />

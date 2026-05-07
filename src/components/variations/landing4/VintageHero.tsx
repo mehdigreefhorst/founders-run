@@ -13,7 +13,6 @@ export function VintageHero({ className }: VintageHeroProps) {
     weekday: site.nextRun.weekday,
     time: site.nextRun.time,
     distance: site.nextRun.distance,
-    pace: site.nextRun.pace,
   };
 
   return (
@@ -78,31 +77,38 @@ export function VintageHero({ className }: VintageHeroProps) {
             </a>
           </div>
 
-          <div className="mt-6 grid grid-cols-2 sm:grid-cols-5 overflow-hidden rounded-sm border-[3px] border-[var(--vintage-cocoa-deep)] bg-[var(--vintage-cream-soft)]">
-            <div className="col-span-2 sm:col-span-1 flex items-center justify-center bg-[var(--vintage-brick-deep)] px-4 py-3 text-[var(--vintage-cream)]">
-              <div className="flex flex-col items-center leading-none">
-                <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.32em]">
-                  {c.nextRun.eyebrow}
-                </span>
-                <span className="mt-1 font-varsity text-lg">{c.nextRun.label}</span>
-              </div>
-            </div>
-            {c.nextRun.fields.map((field) => {
-              const value = field.uppercase ? sourceMap[field.source].toUpperCase() : sourceMap[field.source];
-              return (
-                <div
-                  key={field.label}
-                  className="flex flex-col items-start justify-center gap-1 border-l-[2px] border-dashed border-[var(--vintage-cocoa-deep)]/30 px-4 py-3 first:border-l-0 sm:py-4"
-                >
-                  <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.28em] text-[var(--vintage-cocoa)]">
-                    {field.label}
+          <div className="mt-6 overflow-hidden rounded-sm border-[3px] border-[var(--vintage-cocoa-deep)] bg-[var(--vintage-cream-soft)]">
+            <div className="grid grid-cols-2 lg:grid-cols-4">
+              <div className="col-span-2 lg:col-span-1 flex items-center justify-center bg-[var(--vintage-brick-deep)] px-4 py-3 text-[var(--vintage-cream)]">
+                <div className="flex flex-col items-center leading-none">
+                  <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.32em]">
+                    {c.nextRun.eyebrow}
                   </span>
-                  <span className="font-display text-base font-bold leading-tight text-[var(--vintage-cocoa-deep)] md:text-lg">
-                    {value}
-                  </span>
+                  <span className="mt-1 font-varsity text-lg">{c.nextRun.label}</span>
                 </div>
-              );
-            })}
+              </div>
+              {c.nextRun.fields.map((field, i) => {
+                const value = field.uppercase ? sourceMap[field.source].toUpperCase() : sourceMap[field.source];
+                return (
+                  <div
+                    key={field.label}
+                    className={cn(
+                      "flex min-w-0 flex-col items-start justify-center gap-1 px-4 py-3 lg:py-4",
+                      "border-dashed border-[var(--vintage-cocoa-deep)]/30",
+                      "border-t-[2px] lg:border-t-0 lg:border-l-[2px]",
+                      i % 2 === 1 ? "border-l-[2px]" : "",
+                    )}
+                  >
+                    <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.28em] text-[var(--vintage-cocoa)]">
+                      {field.label}
+                    </span>
+                    <span className="font-display text-sm font-bold leading-tight text-[var(--vintage-cocoa-deep)] break-words md:text-base lg:text-base">
+                      {value}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
           </div>
         </div>
 
