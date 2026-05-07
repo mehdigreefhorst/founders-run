@@ -30,18 +30,21 @@ export function SiteFooter({ className }: SiteFooterProps) {
           </span>
           <SocialBar variant="list" />
         </div>
-        <div className="flex flex-col gap-3 md:items-end">
+        <div className="flex flex-col gap-3 md:items-end md:text-right">
           <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-muted-foreground">
             {c.contactLabel}
           </span>
-          <a
-            href={site.founder.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="text-sm text-ink hover:text-terracotta-deep transition-colors"
-          >
-            {site.founder.name} · {site.founder.role}
-          </a>
+          {site.founders.map((f) => (
+            <a
+              key={f.linkedin}
+              href={f.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="text-sm text-ink hover:text-terracotta-deep transition-colors"
+            >
+              {f.name} · {f.role}
+            </a>
+          ))}
           <span className="text-xs text-muted-foreground font-mono">
             {c.copyrightPrefix} {year} {site.brand.domain}
           </span>

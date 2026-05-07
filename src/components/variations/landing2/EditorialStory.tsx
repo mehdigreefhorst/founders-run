@@ -115,7 +115,7 @@ export function EditorialStory({ className }: EditorialStoryProps) {
               <span className="italic">{c.pullQuoteEmphasis}</span>
             </blockquote>
             <figcaption className="font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-graphite">
-              — {site.founder.name}, {c.pullQuoteAttribSuffix}
+              — {site.founders[0].name}, {c.pullQuoteAttribSuffix}
             </figcaption>
           </figure>
         </Reveal>

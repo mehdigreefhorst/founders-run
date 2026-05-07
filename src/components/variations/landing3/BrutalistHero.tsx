@@ -86,11 +86,15 @@ export function BrutalistHero() {
           </pre>
           <div className="border-t-2 border-[var(--stamp)] bg-[var(--paper-soft)] px-6 py-4 md:px-8">
             <p className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[var(--stamp)]/60">
-              {c.founderLabel} {site.founder.name}
+              {c.founderLabel} {site.founders.map((f) => f.name).join(" & ")}
             </p>
-            <p className="mt-1 font-mono text-xs text-[var(--stamp)]/80">
-              {site.founder.note}
-            </p>
+            <ul className="mt-1 flex flex-col gap-0.5 font-mono text-xs text-[var(--stamp)]/80">
+              {site.founders.map((f) => (
+                <li key={f.linkedin}>
+                  <span className="text-[var(--stamp)]/40">{`>`}</span> {f.name.split(" ")[0]} — {f.note}
+                </li>
+              ))}
+            </ul>
           </div>
         </aside>
       </div>

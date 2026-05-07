@@ -23,20 +23,29 @@ export function BrutalistFooter() {
           <span className="font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[var(--stamp)]/50">
             {c.founderLabel}
           </span>
-          <p className="mt-3 font-mono text-lg md:text-xl font-bold uppercase text-[var(--stamp)]">
-            {site.founder.name}
-          </p>
-          <p className="mt-1 font-mono text-sm text-[var(--stamp)]/70">
-            {site.founder.role}
-          </p>
-          <a
-            href={site.founder.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="mt-4 inline-flex items-center gap-2 border-2 border-[var(--stamp)] bg-[var(--paper)] px-3 py-1.5 font-mono text-xs uppercase tracking-[0.22em] text-[var(--stamp)] transition-colors hover:bg-[var(--stamp)] hover:text-[var(--paper)]"
-          >
-            <span aria-hidden>{c.founderArrow}</span> {c.founderLink}
-          </a>
+          <ul className="mt-3 flex flex-col divide-y-2 divide-[var(--stamp)]/15">
+            {site.founders.map((f, i) => (
+              <li key={f.linkedin} className={i === 0 ? "pb-4" : "pt-4"}>
+                <p className="font-mono text-lg md:text-xl font-bold uppercase text-[var(--stamp)]">
+                  {f.name}
+                </p>
+                <p className="mt-1 font-mono text-sm text-[var(--stamp)]/70">
+                  {f.role}
+                </p>
+                <p className="mt-1 font-mono text-xs text-[var(--stamp)]/60">
+                  {f.note}
+                </p>
+                <a
+                  href={f.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="mt-3 inline-flex items-center gap-2 border-2 border-[var(--stamp)] bg-[var(--paper)] px-3 py-1.5 font-mono text-xs uppercase tracking-[0.22em] text-[var(--stamp)] transition-colors hover:bg-[var(--stamp)] hover:text-[var(--paper)]"
+                >
+                  <span aria-hidden>{c.founderArrow}</span> {c.founderLink}
+                </a>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="lg:col-span-4 border-b-2 lg:border-b-0 lg:border-r-2 border-[var(--stamp)] px-6 md:px-10 py-8">

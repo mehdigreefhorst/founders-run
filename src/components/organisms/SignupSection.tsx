@@ -42,7 +42,7 @@ export function SignupSection({ className }: SignupSectionProps) {
               <SocialBar variant="list" />
             </div>
             <p className="text-sm text-ink/70 max-w-md leading-relaxed">
-              {c.founderCredit} {site.founder.name}. {c.founderNote}
+              {c.founderCredit} {site.founders.map((f) => f.name).join(" & ")}. {c.founderNote}
             </p>
           </Reveal>
 

@@ -35,6 +35,13 @@ export interface NextRun {
   readonly pace: string;
 }
 
+export interface Founder {
+  readonly name: string;
+  readonly role: string;
+  readonly note: string;
+  readonly linkedin: string;
+}
+
 export const site = {
   brand: {
     name: "Founders Run",
@@ -107,7 +114,7 @@ export const site = {
     weekday: "Wednesday",
     time: "07:00",
     meetingPoint: "Stadhuisplein, Eindhoven",
-    distance: "5 km",
+    distance: "6 km",
     pace: "Conversational",
   } satisfies NextRun,
 
@@ -116,7 +123,7 @@ export const site = {
       id: "weekly",
       title: "The weekly run",
       cadence: "Every Wednesday",
-      time: "07:00 · 5 km · conversational pace",
+      time: "07:00 · 6 km · conversational pace",
       description:
         "Show up at Stadhuisplein. We run together and grab coffee after. Bring whoever you'd like to introduce.",
       tag: "weekly",
@@ -142,12 +149,7 @@ export const site = {
   ] as const satisfies readonly EventEntry[],
 
   socials: [
-    {
-      id: "youtube",
-      label: "YouTube",
-      handle: "@foundersrun",
-      url: "https://www.youtube.com/@foundersrun",
-    },
+
     {
       id: "instagram",
       label: "Instagram",
@@ -166,14 +168,33 @@ export const site = {
       handle: "commitify.me",
       url: "https://commitify.me",
     },
+    {
+      id: "owow",
+      label: "OWOW",
+      handle: "owow.io",
+      url: "https://www.owow.io",
+    },
   ] as const satisfies readonly SocialLink[],
 
-  founder: {
-    name: "Mehdi Greefhorst",
-    role: "Founder of Founders Run Eindhoven",
-    note: "Started this in September. Runs every Wednesday since.",
-    linkedin: "https://www.linkedin.com/in/mehdigreefhorst",
-  },
+  /**
+   * The two founders of Founders Run Eindhoven. Both render side-by-side in
+   * footers and credit blocks. The first entry (Mehdi) is the canonical
+   * "voice" used for singular attributions like the editorial pull-quote.
+   */
+  founders: [
+    {
+      name: "Mehdi Greefhorst",
+      role: "Founder Commitify.me",
+      note: "Helps people to push themselves and support where needed.",
+      linkedin: "https://www.linkedin.com/in/mehdi-greefhorst",
+    },
+    {
+      name: "Robin Dohmen",
+      role: "Co-founder OWOW",
+      note: "Helps other founders fulfill their dreams.",
+      linkedin: "https://www.linkedin.com/in/robindohmen/",
+    },
+  ] as const satisfies readonly Founder[],
 
   /**
    * All user-visible copy that doesn't already live elsewhere in this file.
@@ -347,7 +368,7 @@ export const site = {
             body: "Eindhoven founders who actually keep showing up. Invite-only, run by hand.",
           },
         ],
-        colophonPrefix: "Founded September · Eindhoven ·",
+        colophonPrefix: "Founded September 2025 · Eindhoven ·",
         formMastheadLeft: "Form / SUB-01",
         formMastheadRight: "4 fields",
         fieldLabels: {
@@ -409,7 +430,7 @@ export const site = {
 > 07:00  RUN.START()
 > 07:35  COFFEE
 > 08:30  FIRST_MEETING`,
-        founderLabel: "Founder ·",
+        founderLabel: "Founders ·",
         nextRunLabel: "NEXT.RUN",
         nextRunRows: [
           { label: "DAY", source: "weekday" as const },
@@ -615,7 +636,7 @@ export const site = {
         wordmark: "FOUNDERS · RUN · CLUB",
         wordmarkAria: "Founders Run Club",
         patchesLabel: "Patches · Follow",
-        coachLabel: "Coach",
+        coachLabel: "Coaches",
         colophonLabel: "Colophon",
         colophonStamp: { line1: "EST.", line2: "SEPT", line3: "2025" },
         copyrightPrefix: "©",

@@ -64,24 +64,28 @@ export function VintageFooter({ className }: VintageFooterProps) {
           </ul>
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div className="flex flex-col gap-5">
           <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
             {c.coachLabel}
           </span>
-          <a
-            href={site.founder.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="font-display text-xl font-bold text-[var(--vintage-cocoa-deep)] hover:text-[var(--vintage-brick-deep)] transition-colors"
-          >
-            {site.founder.name}
-          </a>
-          <span className="font-sans text-sm text-[var(--vintage-cocoa-deep)]/80">
-            {site.founder.role}
-          </span>
-          <span className="mt-1 font-sans text-xs italic text-[var(--vintage-cocoa)]">
-            {site.founder.note}
-          </span>
+          {site.founders.map((f) => (
+            <div key={f.linkedin} className="flex flex-col gap-1">
+              <a
+                href={f.linkedin}
+                target="_blank"
+                rel="noreferrer"
+                className="font-display text-xl font-bold text-[var(--vintage-cocoa-deep)] hover:text-[var(--vintage-brick-deep)] transition-colors"
+              >
+                {f.name}
+              </a>
+              <span className="font-sans text-sm text-[var(--vintage-cocoa-deep)]/80">
+                {f.role}
+              </span>
+              <span className="mt-0.5 font-sans text-xs italic text-[var(--vintage-cocoa)]">
+                {f.note}
+              </span>
+            </div>
+          ))}
         </div>
 
         <div className="flex flex-col gap-3 md:items-end md:text-right">

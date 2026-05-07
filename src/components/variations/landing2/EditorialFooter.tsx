@@ -42,17 +42,23 @@ export function EditorialFooter({ className }: EditorialFooterProps) {
           <p className="font-sans text-sm md:text-base leading-relaxed text-editorial-ink/80 max-w-sm">
             {site.brand.shortPitch}
           </p>
-          <a
-            href={site.founder.linkedin}
-            target="_blank"
-            rel="noreferrer"
-            className="font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-ink hover:text-editorial-blaze transition-colors mt-2"
-          >
-            {site.founder.name} — {site.founder.role} {c.founderArrow}
-          </a>
-          <p className="font-sans text-xs text-editorial-graphite max-w-sm leading-relaxed">
-            {site.founder.note}
-          </p>
+          <ul className="flex flex-col gap-3 mt-2">
+            {site.founders.map((f) => (
+              <li key={f.linkedin} className="flex flex-col gap-1">
+                <a
+                  href={f.linkedin}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-ink hover:text-editorial-blaze transition-colors"
+                >
+                  {f.name} — {f.role} {c.founderArrow}
+                </a>
+                <p className="font-sans text-xs text-editorial-graphite max-w-sm leading-relaxed">
+                  {f.note}
+                </p>
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="col-span-6 md:col-span-2 flex flex-col gap-4">
