@@ -1,64 +1,32 @@
-"use client";
-
-import { motion, type Transition, useReducedMotion } from "motion/react";
+import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
 type RevealDirection = "up" | "down" | "left" | "right" | "none";
 
 interface RevealProps {
   readonly children: ReactNode;
+  /** No-op. Kept for API compatibility with the old Motion-based Reveal. */
   readonly delay?: number;
+  /** No-op. Kept for API compatibility. */
   readonly duration?: number;
+  /** No-op. Kept for API compatibility. */
   readonly direction?: RevealDirection;
+  /** No-op. Kept for API compatibility. */
   readonly distance?: number;
   readonly className?: string;
+  /** No-op. Kept for API compatibility. */
   readonly once?: boolean;
 }
 
-const offsets: Record<RevealDirection, { x: number; y: number }> = {
-  up: { x: 0, y: 32 },
-  down: { x: 0, y: -32 },
-  left: { x: 32, y: 0 },
-  right: { x: -32, y: 0 },
-  none: { x: 0, y: 0 },
-};
-
 /**
- * Apple-style scroll reveal. Wrap any block to fade + slide it in
- * the first time it enters the viewport.
+ * Pure passthrough. Used to be a Motion-based scroll reveal — but
+ * Motion's `whileInView` was unreliable in Next.js dev mode (Strict
+ * Mode double-render breaks the IntersectionObserver) and `animate`
+ * with `initial: opacity 0` made content disappear if Motion failed
+ * to mount cleanly. Stability > flair: content is now always visible.
+ *
+ * The props are kept so callers don't need to be edited.
  */
-export function Reveal({
-  children,
-  delay = 0,
-  duration = 0.8,
-  direction = "up",
-  distance,
-  className,
-  once = true,
-}: RevealProps) {
-  const reduceMotion = useReducedMotion();
-  const offset = offsets[direction];
-  const dx = direction === "left" || direction === "right" ? distance ?? offset.x : 0;
-  const dy = direction === "up" || direction === "down" ? distance ?? offset.y : 0;
-
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
-  const transition: Transition = {
-    duration,
-    delay,
-    ease: [0.22, 1, 0.36, 1] as const,
-  };
-
-  return (
-    <motion.div
-      className={className}
-      initial={{ opacity: 0, x: dx, y: dy }}
-      animate={{ opacity: 1, x: 0, y: 0 }}
-      transition={transition}
-    >
-      {children}
-    </motion.div>
-  );
+export function Reveal({ children, className }: RevealProps) {
+  return <div className={cn(className)}>{children}</div>;
 }

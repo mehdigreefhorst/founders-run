@@ -1,12 +1,12 @@
-"use client";
-
-import { motion, useReducedMotion, type Variants } from "motion/react";
+import { cn } from "@/lib/utils";
 import type { ReactNode } from "react";
 
 interface StaggerProps {
   readonly children: ReactNode;
   readonly className?: string;
+  /** No-op. Kept for API compatibility with the old Motion-based Stagger. */
   readonly stagger?: number;
+  /** No-op. Kept for API compatibility. */
   readonly delay?: number;
 }
 
@@ -15,50 +15,18 @@ interface StaggerItemProps {
   readonly className?: string;
 }
 
-const easeOutSoft = [0.22, 1, 0.36, 1] as const;
-
-const containerVariants = (stagger: number, delay: number): Variants => ({
-  hidden: {},
-  visible: {
-    transition: { staggerChildren: stagger, delayChildren: delay },
-  },
-});
-
-const itemVariants: Variants = {
-  hidden: { opacity: 0, y: 24 },
-  visible: {
-    opacity: 1,
-    y: 0,
-    transition: { duration: 0.7, ease: easeOutSoft },
-  },
-};
-
-export function Stagger({ children, className, stagger = 0.08, delay = 0 }: StaggerProps) {
-  const reduceMotion = useReducedMotion();
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-
-  return (
-    <motion.div
-      className={className}
-      variants={containerVariants(stagger, delay)}
-      initial="hidden"
-      animate="visible"
-    >
-      {children}
-    </motion.div>
-  );
+/**
+ * Pure passthrough. Used to be a Motion-based staggered reveal — but
+ * Motion's `whileInView` was unreliable in Next.js dev mode and any
+ * `initial: opacity 0` setup risked content disappearing if Motion
+ * failed to mount. Stability > flair.
+ *
+ * Props kept so call sites don't need to change.
+ */
+export function Stagger({ children, className }: StaggerProps) {
+  return <div className={cn(className)}>{children}</div>;
 }
 
 export function StaggerItem({ children, className }: StaggerItemProps) {
-  const reduceMotion = useReducedMotion();
-  if (reduceMotion) {
-    return <div className={className}>{children}</div>;
-  }
-  return (
-    <motion.div className={className} variants={itemVariants}>
-      {children}
-    </motion.div>
-  );
+  return <div className={cn(className)}>{children}</div>;
 }
