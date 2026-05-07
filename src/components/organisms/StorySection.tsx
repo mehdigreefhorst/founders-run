@@ -20,6 +20,7 @@ export function StorySection({ className }: StorySectionProps) {
       )}
     >
       <div className="mx-auto max-w-7xl px-6 md:px-10">
+
         <Reveal>
           <SectionHeading
             eyebrow={c.eyebrow}
