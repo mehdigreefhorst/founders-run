@@ -1,108 +1,160 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Founders Run Eindhoven
 
-## Getting Started
+Marketing site for [foundersrun.nl](https://foundersrun.nl) — a weekly Wednesday 07:00 run for founders in Eindhoven and any passing through.
 
-First, run the development server:
-
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-
-# Important links: 
-Instagram: `https://www.instagram.com/foundersrunandcoffee`
-TikTok: `https://www.tiktok.com/@foundersrunandcoffee`
-Commitify: `https://www.commitify.me`
-
-
-# Event ideas:
+Co-founders: **Mehdi Greefhorst** ([Commitify](https://commitify.me)) · **Robin Dohmen** ([OWOW](https://www.owow.io))
 
 ---
 
-## WhatsApp signup edge function
+## What's in here
 
-The `/api/apply` route is a thin server-side proxy that forwards JSON to the Supabase Edge Function `save_whatsapp_group_application`. The function validates with Zod, rate-limits by email/IP (10-min window), respects a `website` honeypot, inserts into the private `whatsapp_applications` table via the service role, and posts a Discord embed (best-effort).
+Four design variations of the same single-page site, each consuming the same content from `src/config/site.ts`. Switching between them at:
 
-### Env vars
+| Route | Direction |
+|---|---|
+| `/landing-1` | **Dawn / atmospheric** — sunrise gradient hero, Fraunces serif, hero video |
+| `/landing-2` | **Editorial / sport magazine** — paper white + electric orange, masthead header |
+| `/landing-3` | **Brutalist / raw startup** — hard borders, all-mono, signal-green accents |
+| `/landing-4` | **Vintage athletic** — built around the Founders Run × Coffee poster, varsity Bungee Inline |
+| `/` | Internal index linking to all four |
 
-Next.js (`.env.local`, server-only — never `NEXT_PUBLIC_`):
+The point of having four: each variation explores a different aesthetic on top of the same atomic component library, so we can pick a winner without rebuilding content.
+
+## Stack
+
+- **Next.js 16** (App Router) + **React 19** + **TypeScript**
+- **Tailwind CSS v4** with brand tokens defined in `src/app/globals.css`
+- **shadcn/ui** primitives (Base UI under the hood, not Radix)
+- **Motion** (`motion/react` v12) for fade-in animations
+- **Supabase** Edge Function for the private WhatsApp signup
+- **Vercel Analytics** + **Google Analytics 4**
+- Hosted on **Vercel**
+
+## Single source of truth: `src/config/site.ts`
+
+Every word the user reads is in `site.ts` — including per-variation chrome (eyebrows, button labels, footer columns, ASCII strings, marquees, toast messages). Edit a phrase there → every variation updates. No hardcoded copy in components.
+
+Top-level shape:
+
+```ts
+site = {
+  brand:    { name, location, domain, tagline, shortPitch, poster }
+  hero:     { eyebrow, title, sub, primaryCta, secondaryCta }
+  video:    { src, poster, youtubeUrl }
+  carousel: [ { src, alt }, … ]
+  story:    [ { eyebrow, title, body }, … ]
+  nextRun:  { weekday, time, meetingPoint, distance, pace }
+  events:   [ { title, cadence, time, description, tag }, … ]
+  socials:  [ { id, label, handle, url }, … ]
+  founders: [ { name, role, note, linkedin }, … ]
+  copy:     { shared, index, landing1, landing2, landing3, landing4 }
+}
+```
+
+## Project layout
 
 ```
-SUPABASE_URL=https://<project-ref>.supabase.co
-SUPABASE_ANON_KEY=<anon-key>
+src/
+  app/
+    layout.tsx              ← root layout, fonts, GA, Vercel Analytics
+    page.tsx                ← variation index
+    landing-{1,2,3,4}/      ← each variation's route
+  components/
+    atoms/                  ← Wordmark, Eyebrow, SocialIcon, Poster, …
+    molecules/              ← SignupForm, HeroCarousel, EventCard, …
+    organisms/              ← Hero, StorySection, EventsSection, … (landing-1)
+    variations/
+      landing2/             ← Editorial-specific organisms
+      landing3/             ← Brutalist-specific organisms
+      landing4/             ← Vintage-specific organisms
+    motion/                 ← Reveal, Stagger
+    ui/                     ← shadcn primitives
+  config/
+    site.ts                 ← all copy + structured content
+  lib/
+    whatsapp-signup.ts      ← client → Supabase Edge Function call
+
+supabase/
+  functions/save_whatsapp_group_application/
+                            ← Deno edge function
+  migrations/               ← whatsapp_applications table
 ```
 
-Edge function secrets (set via `supabase secrets set`, **not** in source). `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` are auto-injected by the platform — only the Discord webhook needs to be set explicitly:
+## Local development
 
 ```bash
-supabase secrets set DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+npm install
+cp .env.example .env.local   # fill in values from Vercel + Supabase
+npm run dev                  # starts on http://localhost:3010
 ```
 
-For local `supabase functions serve`, put all three in `supabase/functions/.env`:
+> **Heads up on Node version**: `eslint-visitor-keys` warns on Node 23. Node 22 LTS is the cleanest setup. Doesn't break runtime, just an `npm warn EBADENGINE` at install time.
 
-```
-SUPABASE_URL=http://host.docker.internal:54321
-SUPABASE_SERVICE_ROLE_KEY=<local-service-role-key>
-DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
-```
+## Environment variables
 
-### Local dev
+See `.env.example` for the full list with safety notes. Quick summary:
+
+**Vercel** (Production + Preview): all three are `NEXT_PUBLIC_*`, designed to ship to the client.
+
+| Variable | Source |
+|---|---|
+| `NEXT_PUBLIC_GA_ID` | analytics.google.com → Data Streams |
+| `NEXT_PUBLIC_SUPABASE_URL` | supabase.com → Project Settings → API |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | supabase.com → Project Settings → API |
+
+**Supabase secrets** (Edge Function only, never `NEXT_PUBLIC_`):
+
+| Variable | Notes |
+|---|---|
+| `DISCORD_WEBHOOK_URL` | `supabase secrets set DISCORD_WEBHOOK_URL=…` |
+| `SUPABASE_URL` | Auto-injected by Supabase |
+| `SUPABASE_SERVICE_ROLE_KEY` | Auto-injected; **never** put in Vercel |
+
+## WhatsApp signup flow
+
+Client → `/api/apply` (Next.js proxy) → `save_whatsapp_group_application` (Supabase Edge) → 1) inserts into private `whatsapp_applications` table via service role, 2) POSTs Discord embed to your channel.
+
+The function does Zod validation, IP+email rate-limiting (10-min window), and a `website` honeypot. The WhatsApp invite link itself is never exposed publicly — Mehdi reviews each request manually.
+
+### Edge function deploy
 
 ```bash
-# One-time, if not yet initialized
-supabase init
+# One-time
 supabase link --project-ref <project-ref>
 
-# Run the migration locally
-supabase db push                                         # against linked remote
-# or apply to a local stack
-supabase migration up
-
-# Scaffold (already done in this repo, kept for reference)
-supabase functions new save_whatsapp_group_application
-
-# Serve locally with the env file above
-supabase functions serve save_whatsapp_group_application --env-file supabase/functions/.env --no-verify-jwt
-```
-
-### Deploy
-
-```bash
-# Push the migration to the remote DB
+# Apply migration
 supabase db push
 
-# Deploy the edge function (publicly callable; auth is enforced inside)
+# Set the Discord webhook secret
+supabase secrets set DISCORD_WEBHOOK_URL=https://discord.com/api/webhooks/...
+
+# Deploy the function (auth is enforced inside; --no-verify-jwt)
 supabase functions deploy save_whatsapp_group_application --no-verify-jwt
 ```
 
-### Migration file
+### Local edge function serving
 
-`supabase/migrations/20260507000000_create_whatsapp_applications.sql` creates the table with RLS enabled, no policies, and revokes Data API access from `anon` / `authenticated`. Only the service role used by the edge function can read/write.
+Put all three secrets in `supabase/functions/.env` (gitignored), then:
 
+```bash
+supabase functions serve save_whatsapp_group_application \
+  --env-file supabase/functions/.env --no-verify-jwt
+```
+
+### The migration
+
+`supabase/migrations/20260507000000_create_whatsapp_applications.sql` creates the table with RLS enabled, no policies, and revokes Data API access from `anon` / `authenticated`. Only the service role used by the edge function can read/write — the Supabase client lib running in the browser cannot touch this table.
+
+## Brand assets
+
+- **`public/logo-luma-founders-run.jpeg`** — the official illustrated poster used on every Luma event and the WhatsApp group. Featured prominently on `/landing-4`.
+- **`public/video/hero.mp4`** — hero video used on `/landing-1`. ~38 MB; consider Vercel Blob or a CDN if this grows.
+- **`public/images/run/01.jpg`–`06.jpg`** — placeholder run photo slots (the carousel falls back to gradient placeholders if the files are missing).
+
+## Socials
+
+- Instagram: [@foundersrun.nl](https://www.instagram.com/foundersrun.nl)
+- TikTok: [@foundersrun](https://www.tiktok.com/@foundersrun)
+- YouTube: [@mymehdimoments](https://www.youtube.com/@mymehdimoments)
+- Commitify: [commitify.me](https://commitify.me) — for run reminder calls
+- OWOW: [owow.io](https://www.owow.io) — Robin's company
