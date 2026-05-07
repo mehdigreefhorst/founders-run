@@ -1,7 +1,20 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/next";
 import { Bungee_Inline, Fraunces, Inter_Tight, JetBrains_Mono } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
+
+/**
+ * Google Analytics 4. Set NEXT_PUBLIC_GA_ID in .env.local (and in
+ * Vercel env vars for production). When unset, the script is not
+ * injected — keeps dev sessions out of the production stream and
+ * avoids loading gtag.js until you actually have an ID.
+ *
+ * The "NEXT_PUBLIC_" prefix is required so the value is available
+ * to the client-side bundle.
+ */
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID;
 
 const fraunces = Fraunces({
   variable: "--font-display",
@@ -55,8 +68,10 @@ export default function RootLayout({ children }: RootLayoutProps) {
       className={`${fraunces.variable} ${interTight.variable} ${jetbrainsMono.variable} ${bungeeInline.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground">
+        <Analytics />
         {children}
         <Toaster richColors closeButton position="top-center" />
+        {GA_ID ? <GoogleAnalytics gaId={GA_ID} /> : null}
       </body>
     </html>
   );
