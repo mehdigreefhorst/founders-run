@@ -44,8 +44,7 @@ export function Stagger({ children, className, stagger = 0.08, delay = 0 }: Stag
       className={className}
       variants={containerVariants(stagger, delay)}
       initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.05 }}
+      animate="visible"
     >
       {children}
     </motion.div>
