@@ -6,18 +6,9 @@ interface VintageHeaderProps {
   readonly className?: string;
 }
 
-const navItems: ReadonlyArray<{ readonly href: string; readonly label: string }> = [
-  { href: "#story", label: "STORY" },
-  { href: "#events", label: "EVENTS" },
-  { href: "#join", label: "JOIN" },
-];
-
-/**
- * Vintage athletic site header — race-bib number on the left, varsity wordmark
- * in the middle, hard-pressed CTA on the right. Two-tone double rule across
- * the bottom.
- */
-export function VintageHeader({ bibNumber = "07", className }: VintageHeaderProps) {
+export function VintageHeader({ bibNumber, className }: VintageHeaderProps) {
+  const c = site.copy.landing4.header;
+  const number = bibNumber ?? c.bibNumber;
   return (
     <header
       className={cn(
@@ -27,14 +18,13 @@ export function VintageHeader({ bibNumber = "07", className }: VintageHeaderProp
       )}
     >
       <div className="mx-auto flex max-w-7xl items-stretch justify-between gap-6 px-5 md:px-10">
-        {/* Race bib */}
         <div className="flex items-center gap-4 py-3 md:py-4">
           <div className="flex h-12 w-12 flex-col items-center justify-center rounded-sm border-[3px] border-[var(--vintage-brick)] bg-[var(--vintage-cream-soft)] text-[var(--vintage-brick-deep)] md:h-14 md:w-14">
             <span className="font-sans text-[0.55rem] font-semibold uppercase leading-none tracking-[0.15em] text-[var(--vintage-cocoa)]">
-              No.
+              {c.bibPrefix}
             </span>
             <span className="font-display text-2xl font-black leading-none tracking-tight md:text-3xl">
-              {bibNumber}
+              {number}
             </span>
           </div>
           <div className="hidden flex-col leading-none sm:flex">
@@ -42,14 +32,13 @@ export function VintageHeader({ bibNumber = "07", className }: VintageHeaderProp
               {site.brand.name.toUpperCase()}
             </span>
             <span className="mt-1 font-sans text-[0.62rem] uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
-              {site.brand.location} · EST. SEPT
+              {site.brand.location} · {c.brandSuffix}
             </span>
           </div>
         </div>
 
-        {/* Nav */}
         <nav className="hidden items-center gap-7 md:flex">
-          {navItems.map((item) => (
+          {c.navItems.map((item) => (
             <a
               key={item.href}
               href={item.href}
@@ -61,7 +50,6 @@ export function VintageHeader({ bibNumber = "07", className }: VintageHeaderProp
           ))}
         </nav>
 
-        {/* CTA */}
         <div className="flex items-center py-3 md:py-4">
           <a
             href="#join"
@@ -74,13 +62,12 @@ export function VintageHeader({ bibNumber = "07", className }: VintageHeaderProp
               "active:translate-x-[3px] active:translate-y-[3px] active:shadow-none",
             )}
           >
-            <span aria-hidden>★</span>
-            <span>SIGN ME UP</span>
+            <span aria-hidden>{c.ctaIcon}</span>
+            <span>{c.ctaLabel}</span>
           </a>
         </div>
       </div>
 
-      {/* Double-rule varsity stripe */}
       <div className="text-[var(--vintage-brick)]">
         <div className="vintage-double-rule" />
       </div>

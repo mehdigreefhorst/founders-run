@@ -5,11 +5,8 @@ interface VintageStoryProps {
   readonly className?: string;
 }
 
-/**
- * Three numbered "training-log" entries. Big varsity numerals on the left,
- * eyebrow + headline + body on the right, with hand-stamped seal marks.
- */
 export function VintageStory({ className }: VintageStoryProps) {
+  const c = site.copy.landing4.story;
   return (
     <section
       id="story"
@@ -21,22 +18,20 @@ export function VintageStory({ className }: VintageStoryProps) {
       )}
     >
       <div className="mx-auto max-w-7xl px-5 md:px-10">
-        {/* Section header */}
         <div className="mb-14 grid gap-6 md:grid-cols-12 md:items-end md:gap-12">
           <div className="md:col-span-5">
             <span className="inline-flex items-center gap-3 font-sans text-xs font-bold uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
               <span className="inline-block h-[2px] w-7 bg-[var(--vintage-brick)]" aria-hidden />
-              The Training Log
+              {c.eyebrow}
             </span>
             <h2 className="mt-4 font-varsity text-[clamp(2.5rem,6vw,5rem)] leading-[0.9] text-[var(--vintage-brick-deep)] vintage-ink-press">
-              WHY WE
+              {c.headlineLine1}
               <br />
-              SHOW UP.
+              {c.headlineLine2}
             </h2>
           </div>
           <p className="md:col-span-6 md:col-start-7 max-w-xl font-sans text-base md:text-lg leading-relaxed text-[var(--vintage-cocoa-deep)]">
-            A short story about what San Francisco gets right, what Eindhoven is
-            missing, and why a 7am Wednesday run beats a one-off event every time.
+            {c.description}
           </p>
         </div>
 
@@ -48,7 +43,6 @@ export function VintageStory({ className }: VintageStoryProps) {
                 key={beat.id}
                 className="grid gap-6 md:grid-cols-12 md:gap-10"
               >
-                {/* Big varsity numeral */}
                 <div className="md:col-span-3 flex items-start gap-4">
                   <span
                     className="font-varsity text-[clamp(4rem,9vw,7.5rem)] leading-none text-[var(--vintage-brick)]"
@@ -59,7 +53,6 @@ export function VintageStory({ className }: VintageStoryProps) {
                   <span className="hidden md:inline-flex h-2 w-12 mt-7 bg-[var(--vintage-cocoa-deep)]" aria-hidden />
                 </div>
 
-                {/* Body */}
                 <div className="md:col-span-8 md:col-start-5 flex flex-col gap-4">
                   <span className="inline-flex items-center gap-2 font-sans text-[0.7rem] font-bold uppercase tracking-[0.32em] text-[var(--vintage-brick-deep)]">
                     <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--vintage-brick)]" aria-hidden />
@@ -77,7 +70,6 @@ export function VintageStory({ className }: VintageStoryProps) {
           })}
         </ol>
 
-        {/* Closing stamp */}
         <div className="mt-20 flex flex-col items-center gap-3 md:mt-28">
           <span
             className={cn(
@@ -86,12 +78,12 @@ export function VintageStory({ className }: VintageStoryProps) {
               "rotate-[-8deg] font-sans text-[0.62rem] font-black uppercase tracking-[0.18em] leading-tight",
             )}
           >
-            <span>EVERY</span>
-            <span className="my-0.5 font-varsity text-base">WED</span>
-            <span>07:00</span>
+            <span>{c.closingStamp.line1}</span>
+            <span className="my-0.5 font-varsity text-base">{c.closingStamp.line2}</span>
+            <span>{c.closingStamp.line3}</span>
           </span>
           <span className="font-sans text-[0.65rem] font-bold uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
-            Since September
+            {c.closingStamp.caption}
           </span>
         </div>
       </div>

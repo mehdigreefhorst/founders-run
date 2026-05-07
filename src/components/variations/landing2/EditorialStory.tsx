@@ -13,13 +13,8 @@ const placeholderGradients: ReadonlyArray<string> = [
   "linear-gradient(200deg, oklch(0.78 0 0) 0%, oklch(0.40 0 0) 60%, oklch(0.14 0 0) 100%)",
 ];
 
-/**
- * Story section — long-form magazine layout.
- *
- * Asymmetric grid: large numerals + dropped caps + pull-quote between beats.
- * Photo placeholders are pure grayscale gradients with crop marks.
- */
 export function EditorialStory({ className }: EditorialStoryProps) {
+  const c = site.copy.landing2.story;
   return (
     <section
       id="story"
@@ -29,61 +24,51 @@ export function EditorialStory({ className }: EditorialStoryProps) {
       )}
     >
       <div className="mx-auto max-w-[1400px] px-6 md:px-12">
-        {/* Section header */}
         <Reveal>
           <div className="grid grid-cols-12 gap-x-6 md:gap-x-8 items-end border-b border-editorial-ink pb-8">
             <div className="col-span-12 md:col-span-3 flex flex-col gap-3">
               <span className="font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-graphite">
-                Section 02
+                {c.sectionLabel}
               </span>
               <span className="font-display text-[3rem] md:text-[4.5rem] leading-none tracking-tight text-editorial-blaze font-light">
-                02
+                {c.sectionNumber}
               </span>
             </div>
             <div className="col-span-12 md:col-span-9 flex flex-col gap-4">
               <h2 className="font-display font-medium leading-[0.92] tracking-[-0.025em] text-balance text-[clamp(2.25rem,6vw,5rem)] text-editorial-ink">
-                Why this exists.{" "}
-                <span className="italic font-light">And why it&apos;s 7am.</span>
+                {c.headlineLead}{" "}
+                <span className="italic font-light">{c.headlineFollow}</span>
               </h2>
               <p className="max-w-2xl font-sans text-base md:text-lg text-editorial-graphite leading-relaxed">
-                A short feature on what San Francisco gets right, what Eindhoven
-                is missing, and why a recurring run beats a one-off event every time.
+                {c.description}
               </p>
             </div>
           </div>
         </Reveal>
 
-        {/* Story beats */}
         <Stagger className="mt-20 md:mt-28 flex flex-col gap-24 md:gap-32">
           {site.story.map((beat, idx) => {
-            const isEven = idx % 2 === 0;
+            const num = String(idx + 1).padStart(2, "0");
             return (
               <StaggerItem key={beat.id}>
                 <article className="grid grid-cols-12 gap-x-6 md:gap-x-8 gap-y-8 items-start">
-                  {/* Numeral / meta column */}
                   <div className="col-span-12 md:col-span-2">
                     <div className="flex md:flex-col items-baseline md:items-start gap-4">
                       <span className="font-display text-[5rem] md:text-[7rem] leading-[0.8] tracking-tight text-editorial-ink font-light">
-                        {String(idx + 1).padStart(2, "0")}
+                        {num}
                       </span>
                       <div className="flex flex-col gap-1">
                         <span className="font-mono text-[0.6rem] uppercase tracking-[0.32em] text-editorial-blaze">
                           {beat.eyebrow}
                         </span>
                         <span className="font-mono text-[0.6rem] uppercase tracking-[0.32em] text-editorial-graphite">
-                          Chapter {idx + 1}
+                          {c.chapterPrefix} {idx + 1}
                         </span>
                       </div>
                     </div>
                   </div>
 
-                  {/* Body */}
-                  <div
-                    className={cn(
-                      "col-span-12 md:col-span-6 flex flex-col gap-5",
-                      isEven ? "md:col-start-3" : "md:col-start-3"
-                    )}
-                  >
+                  <div className="col-span-12 md:col-span-6 md:col-start-3 flex flex-col gap-5">
                     <h3 className="font-display text-balance font-medium text-3xl md:text-4xl lg:text-5xl leading-[0.98] tracking-[-0.02em] text-editorial-ink">
                       {beat.title}
                     </h3>
@@ -92,7 +77,6 @@ export function EditorialStory({ className }: EditorialStoryProps) {
                     </p>
                   </div>
 
-                  {/* Photo / pull quote column */}
                   <div className="col-span-12 md:col-span-4 md:col-start-9 flex flex-col gap-4">
                     <div
                       className="relative overflow-hidden aspect-[4/5] w-full"
@@ -104,7 +88,7 @@ export function EditorialStory({ className }: EditorialStoryProps) {
                       <StoryGrain />
                       <div className="absolute inset-x-0 bottom-0 p-4 flex items-end justify-between gap-3 z-10">
                         <span className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-white/80 max-w-[70%] leading-snug">
-                          Plate {String(idx + 1).padStart(2, "0")} — {beat.eyebrow}
+                          {c.platePrefix} {num} — {beat.eyebrow}
                         </span>
                         <span className="font-display text-2xl text-white/95 leading-none italic">
                           ¶
@@ -112,7 +96,7 @@ export function EditorialStory({ className }: EditorialStoryProps) {
                       </div>
                     </div>
                     <span className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-editorial-graphite">
-                      Fig. {String(idx + 1).padStart(2, "0")} — {beat.eyebrow}
+                      {c.figPrefix} {num} — {beat.eyebrow}
                     </span>
                   </div>
                 </article>
@@ -121,18 +105,17 @@ export function EditorialStory({ className }: EditorialStoryProps) {
           })}
         </Stagger>
 
-        {/* Pull quote — large center-set magazine quote */}
         <Reveal direction="up" className="mt-24 md:mt-32">
           <figure className="border-t border-b border-editorial-ink py-12 md:py-16 flex flex-col items-center gap-6 text-center">
             <span className="font-display text-[5rem] md:text-[7rem] leading-[0.6] text-editorial-blaze italic">
               &ldquo;
             </span>
             <blockquote className="font-display text-balance text-3xl md:text-5xl lg:text-6xl leading-[1.05] tracking-[-0.02em] max-w-4xl text-editorial-ink">
-              We don&apos;t need a hundred thousand founders around us.{" "}
-              <span className="italic">We need fifty real ones.</span>
+              {c.pullQuoteLead}{" "}
+              <span className="italic">{c.pullQuoteEmphasis}</span>
             </blockquote>
             <figcaption className="font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-graphite">
-              — {site.founder.name}, founder
+              — {site.founder.name}, {c.pullQuoteAttribSuffix}
             </figcaption>
           </figure>
         </Reveal>

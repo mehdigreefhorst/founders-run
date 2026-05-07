@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Wordmark } from "@/components/atoms/Wordmark";
 import { SocialBar } from "@/components/molecules/SocialBar";
 import { Button } from "@/components/ui/button";
+import { site } from "@/config/site";
 
 interface SiteHeaderProps {
   readonly className?: string;
@@ -10,6 +11,8 @@ interface SiteHeaderProps {
 }
 
 export function SiteHeader({ className, variant = "transparent" }: SiteHeaderProps) {
+  const shared = site.copy.shared;
+  const c = site.copy.landing1.header;
   return (
     <header
       className={cn(
@@ -19,13 +22,13 @@ export function SiteHeader({ className, variant = "transparent" }: SiteHeaderPro
       )}
     >
       <div className="mx-auto max-w-7xl flex items-center justify-between gap-6 px-6 md:px-10 py-5">
-        <Link href="/" aria-label="Founders Run home">
+        <Link href="/" aria-label={shared.header.homeAria}>
           <Wordmark size="md" />
         </Link>
         <nav className="hidden md:flex items-center gap-7 font-mono text-[0.78rem] uppercase tracking-[0.18em]">
-          <a href="#story" className="text-ink-soft hover:text-ink transition-colors">Story</a>
-          <a href="#events" className="text-ink-soft hover:text-ink transition-colors">Events</a>
-          <a href="#join" className="text-ink-soft hover:text-ink transition-colors">Join</a>
+          <a href="#story" className="text-ink-soft hover:text-ink transition-colors">{shared.nav.story}</a>
+          <a href="#events" className="text-ink-soft hover:text-ink transition-colors">{shared.nav.events}</a>
+          <a href="#join" className="text-ink-soft hover:text-ink transition-colors">{shared.nav.join}</a>
         </nav>
         <div className="flex items-center gap-4">
           <SocialBar variant="icons" className="hidden sm:flex" />
@@ -35,7 +38,7 @@ export function SiteHeader({ className, variant = "transparent" }: SiteHeaderPro
             render={<a href="#join" />}
             className="rounded-full bg-ink text-cream hover:bg-terracotta-deep"
           >
-            Sign up
+            {c.signupCta}
           </Button>
         </div>
       </div>

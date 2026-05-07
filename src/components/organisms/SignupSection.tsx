@@ -11,6 +11,7 @@ interface SignupSectionProps {
 }
 
 export function SignupSection({ className }: SignupSectionProps) {
+  const c = site.copy.landing1.signup;
   return (
     <section
       id="join"
@@ -24,24 +25,24 @@ export function SignupSection({ className }: SignupSectionProps) {
         <div className="grid lg:grid-cols-12 gap-10 lg:gap-16">
           <Reveal direction="up" className="lg:col-span-5 flex flex-col gap-8">
             <SectionHeading
-              eyebrow="Join"
+              eyebrow={c.eyebrow}
               title={
                 <>
-                  Sign up for<br />
-                  <span className="italic text-cream">the WhatsApp group.</span>
+                  {c.headlineLine1}<br />
+                  <span className="italic text-cream">{c.headlineLine2}</span>
                 </>
               }
-              description="The group is private — keeps it out of scrapers and lets us actually know each other. We&apos;ll send you the invite by email after a quick check."
+              description={c.description}
               className="text-ink"
             />
             <div className="flex flex-col gap-4">
               <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-ink/70">
-                Follow along
+                {c.followLabel}
               </span>
               <SocialBar variant="list" />
             </div>
             <p className="text-sm text-ink/70 max-w-md leading-relaxed">
-              Built by {site.founder.name}. Started running in September. Every Wednesday since.
+              {c.founderCredit} {site.founder.name}. {c.founderNote}
             </p>
           </Reveal>
 

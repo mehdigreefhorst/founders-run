@@ -10,6 +10,7 @@ interface StorySectionProps {
 }
 
 export function StorySection({ className }: StorySectionProps) {
+  const c = site.copy.landing1.story;
   return (
     <section
       id="story"
@@ -21,14 +22,14 @@ export function StorySection({ className }: StorySectionProps) {
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <Reveal>
           <SectionHeading
-            eyebrow="The story"
+            eyebrow={c.eyebrow}
             title={
               <>
-                Why this exists.<br />
-                <span className="text-terracotta-deep italic">And why it&apos;s 7am.</span>
+                {c.headlineLine1}<br />
+                <span className="text-terracotta-deep italic">{c.headlineLine2}</span>
               </>
             }
-            description="A short story about what San Francisco gets right, what Eindhoven is missing, and why a recurring run beats a one-off event every time."
+            description={c.description}
           />
         </Reveal>
 

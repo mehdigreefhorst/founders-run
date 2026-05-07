@@ -44,31 +44,29 @@ const variants: ReadonlyArray<VariantEntry> = [
 ];
 
 export default function VariantIndex() {
+  const c = site.copy.index;
   return (
     <main className="relative min-h-screen bg-cream">
       <div className="mx-auto max-w-5xl px-6 md:px-10 py-16 md:py-24 flex flex-col gap-12">
         <header className="flex items-start justify-between gap-6">
           <div className="flex flex-col gap-3">
             <Wordmark size="lg" />
-            <Eyebrow>Internal — design variations</Eyebrow>
+            <Eyebrow>{c.eyebrow}</Eyebrow>
           </div>
           <SunMark className="size-10 text-terracotta-deep" />
         </header>
 
         <section className="flex flex-col gap-3 max-w-3xl">
           <h1 className="font-display text-balance text-4xl md:text-5xl leading-[1.05] tracking-tight">
-            Four takes on{" "}
-            <span className="italic text-terracotta-deep">
-              {site.brand.name} {site.brand.location}
-            </span>
-            .
+            {c.titleLead}{" "}
+            <span className="italic text-terracotta-deep">{c.titleSubject}</span>.
           </h1>
           <p className="text-lg text-ink-soft">
-            Pick a variation to preview. Each one consumes the same content from{" "}
+            {c.description.split(c.configFilePath)[0]}
             <code className="font-mono text-sm bg-cream-soft px-1.5 py-0.5 rounded">
-              src/config/site.ts
-            </code>{" "}
-            and the same atomic component library, so swapping copy is a one-file change.
+              {c.configFilePath}
+            </code>
+            {c.description.split(c.configFilePath)[1]}
           </p>
         </section>
 
@@ -85,11 +83,11 @@ export default function VariantIndex() {
                   </span>
                   {v.status === "coming" ? (
                     <span className="font-mono text-[0.65rem] uppercase tracking-widest text-muted-foreground border border-border rounded-full px-2 py-0.5">
-                      Pending
+                      {c.badgePending}
                     </span>
                   ) : (
                     <span className="font-mono text-[0.65rem] uppercase tracking-widest text-cream bg-terracotta-deep rounded-full px-2 py-0.5">
-                      Ready
+                      {c.badgeReady}
                     </span>
                   )}
                 </div>
@@ -103,11 +101,11 @@ export default function VariantIndex() {
                   href={v.slug}
                   className="font-mono text-sm uppercase tracking-widest text-ink hover:text-terracotta-deep whitespace-nowrap"
                 >
-                  Open →
+                  {c.openLabel}
                 </Link>
               ) : (
                 <span className="font-mono text-sm uppercase tracking-widest text-muted-foreground whitespace-nowrap">
-                  Soon
+                  {c.soonLabel}
                 </span>
               )}
             </Card>

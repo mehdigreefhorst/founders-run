@@ -22,6 +22,8 @@ const initialState: SignupPayload = {
 export function EditorialSignup({ className }: EditorialSignupProps) {
   const [state, setState] = useState<SignupPayload>(initialState);
   const [submitting, setSubmitting] = useState(false);
+  const c = site.copy.landing2.signup;
+  const sharedToast = site.copy.shared.toast;
 
   const updateField = <K extends keyof SignupPayload>(key: K, value: SignupPayload[K]) =>
     setState((prev) => ({ ...prev, [key]: value }));
@@ -34,16 +36,16 @@ export function EditorialSignup({ className }: EditorialSignupProps) {
       const result = await submitWhatsappSignup(state);
       if (!result.ok) {
         throw new Error(
-          result.error ?? `Request failed (${result.status || "network"})`,
+          result.error ?? `${sharedToast.requestFailedFallback} (${result.status || "network"})`,
         );
       }
-      toast.success("You're on the list. Welcome aboard.", {
-        description: "We'll send the WhatsApp invite by email shortly.",
+      toast.success(sharedToast.success.title, {
+        description: sharedToast.success.description,
       });
       setState(initialState);
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Something went wrong";
-      toast.error("Could not submit", { description: message });
+      const message = error instanceof Error ? error.message : sharedToast.genericError;
+      toast.error(sharedToast.error.title, { description: message });
     } finally {
       setSubmitting(false);
     }
@@ -59,48 +61,37 @@ export function EditorialSignup({ className }: EditorialSignupProps) {
     >
       <div className="mx-auto max-w-[1400px] px-6 md:px-12">
         <div className="grid grid-cols-12 gap-x-6 md:gap-x-8 gap-y-12 items-start">
-          {/* Left — masthead / pitch */}
           <Reveal direction="up" className="col-span-12 lg:col-span-5 flex flex-col gap-8">
             <div className="flex flex-col gap-3">
               <span className="font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-blaze">
-                Section 04 · Subscribe
+                {c.sectionLabel}
               </span>
               <span className="font-display text-[3rem] md:text-[4.5rem] leading-none tracking-tight text-editorial-blaze font-light">
-                04
+                {c.sectionNumber}
               </span>
             </div>
             <h2 className="font-display font-medium leading-[0.92] tracking-[-0.025em] text-balance text-[clamp(2.25rem,5.5vw,4.5rem)] text-editorial-paper">
-              Get on the{" "}
-              <span className="italic font-light">subscriber list.</span>
+              {c.headlineLead}{" "}
+              <span className="italic font-light">{c.headlineFollow}</span>
             </h2>
             <p className="font-sans text-base md:text-lg leading-relaxed text-editorial-paper/70 max-w-md">
-              The WhatsApp group is private — keeps it out of scrapers and lets us
-              actually know each other. We&apos;ll send the invite by email after a
-              quick check.
+              {c.description}
             </p>
             <ul className="border-t border-editorial-paper/15 divide-y divide-editorial-paper/15">
-              <SubscriptionPerk
-                index="A"
-                title="Weekly run reminder"
-                body="Every Tuesday night, the meeting point and route in your inbox."
-              />
-              <SubscriptionPerk
-                index="B"
-                title="Quarterly investor run"
-                body="First dibs on the founders × investors session — capped at 30."
-              />
-              <SubscriptionPerk
-                index="C"
-                title="A small, real community"
-                body="Fifty Eindhoven founders, vetted in person. No spam. No scraping."
-              />
+              {c.perks.map((perk) => (
+                <SubscriptionPerk
+                  key={perk.index}
+                  index={perk.index}
+                  title={perk.title}
+                  body={perk.body}
+                />
+              ))}
             </ul>
             <div className="font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-paper/50">
-              Founded September · Eindhoven · {site.brand.domain}
+              {c.colophonPrefix} {site.brand.domain}
             </div>
           </Reveal>
 
-          {/* Right — form card */}
           <Reveal
             direction="up"
             delay={0.15}
@@ -111,55 +102,54 @@ export function EditorialSignup({ className }: EditorialSignupProps) {
               noValidate
               className="bg-editorial-paper text-editorial-ink p-6 md:p-10 lg:p-12 flex flex-col gap-8"
             >
-              {/* Form masthead */}
               <div className="flex items-baseline justify-between border-b-2 border-editorial-ink pb-4">
                 <span className="font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-graphite">
-                  Form / SUB-01
+                  {c.formMastheadLeft}
                 </span>
                 <span className="font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-blaze">
-                  4 fields
+                  {c.formMastheadRight}
                 </span>
               </div>
 
               <EditorialField
                 id="ed-name"
                 index="01"
-                label="Your name"
+                label={c.fieldLabels.name}
                 value={state.name}
                 onChange={(v) => updateField("name", v)}
-                placeholder="Mehdi Greefhorst"
+                placeholder={site.copy.shared.form.name.placeholder}
                 autoComplete="name"
                 required
               />
               <EditorialField
                 id="ed-email"
                 index="02"
-                label="Email"
+                label={c.fieldLabels.email}
                 type="email"
                 value={state.email}
                 onChange={(v) => updateField("email", v)}
-                placeholder="you@startup.com"
+                placeholder={site.copy.shared.form.email.placeholder}
                 autoComplete="email"
                 required
               />
               <EditorialField
                 id="ed-phone"
                 index="03"
-                label="Phone — for the WhatsApp invite"
+                label={c.fieldLabels.phone}
                 type="tel"
                 value={state.phone}
                 onChange={(v) => updateField("phone", v)}
-                placeholder="+31 6 ..."
+                placeholder={site.copy.shared.form.phone.placeholder}
                 autoComplete="tel"
                 required
               />
               <EditorialField
                 id="ed-what"
                 index="04"
-                label="What do you do?"
+                label={c.fieldLabels.whatYouDo}
                 value={state.what_you_do}
                 onChange={(v) => updateField("what_you_do", v)}
-                placeholder="Founder of … building … for …"
+                placeholder={site.copy.shared.form.whatYouDo.placeholder}
                 multiline
                 required
               />
@@ -170,12 +160,11 @@ export function EditorialSignup({ className }: EditorialSignupProps) {
                 size="lg"
                 className="rounded-none w-full bg-editorial-ink text-editorial-paper hover:bg-editorial-blaze h-14 font-mono text-[0.72rem] uppercase tracking-[0.28em] disabled:opacity-60"
               >
-                {submitting ? "Submitting…" : "Submit subscription →"}
+                {submitting ? c.submit.busy : c.submit.idle}
               </Button>
 
               <p className="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-editorial-graphite leading-relaxed">
-                We keep the WhatsApp group out of public reach. Mehdi reviews each
-                request manually.
+                {c.helper}
               </p>
             </form>
           </Reveal>

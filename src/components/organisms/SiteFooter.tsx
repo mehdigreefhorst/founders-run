@@ -9,6 +9,7 @@ interface SiteFooterProps {
 
 export function SiteFooter({ className }: SiteFooterProps) {
   const year = new Date().getFullYear();
+  const c = site.copy.landing1.footer;
   return (
     <footer
       className={cn(
@@ -25,13 +26,13 @@ export function SiteFooter({ className }: SiteFooterProps) {
         </div>
         <div className="flex flex-col gap-3">
           <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-muted-foreground">
-            Follow
+            {c.followLabel}
           </span>
           <SocialBar variant="list" />
         </div>
         <div className="flex flex-col gap-3 md:items-end">
           <span className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-muted-foreground">
-            Contact
+            {c.contactLabel}
           </span>
           <a
             href={site.founder.linkedin}
@@ -42,7 +43,7 @@ export function SiteFooter({ className }: SiteFooterProps) {
             {site.founder.name} · {site.founder.role}
           </a>
           <span className="text-xs text-muted-foreground font-mono">
-            © {year} {site.brand.domain}
+            {c.copyrightPrefix} {year} {site.brand.domain}
           </span>
         </div>
       </div>

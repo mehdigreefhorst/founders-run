@@ -3,34 +3,27 @@
 import { useState, type FormEvent } from "react";
 import { cn } from "@/lib/utils";
 import { toast } from "sonner";
+import { site } from "@/config/site";
+import { submitWhatsappSignup, type SignupPayload } from "@/lib/whatsapp-signup";
 
 interface VintageSignupProps {
   readonly className?: string;
 }
 
-interface SignupState {
-  readonly name: string;
-  readonly email: string;
-  readonly phone: string;
-  readonly what_you_do: string;
-}
-
-const initialState: SignupState = {
+const initialState: SignupPayload = {
   name: "",
   email: "",
   phone: "",
   what_you_do: "",
 };
 
-/**
- * Vintage athletic signup — styled as a race-registration card.
- * Posts to the same /api/apply endpoint used by the other variations.
- */
 export function VintageSignup({ className }: VintageSignupProps) {
-  const [state, setState] = useState<SignupState>(initialState);
+  const [state, setState] = useState<SignupPayload>(initialState);
   const [submitting, setSubmitting] = useState(false);
+  const c = site.copy.landing4.signup;
+  const sharedToast = site.copy.shared.toast;
 
-  const updateField = <K extends keyof SignupState>(key: K, value: SignupState[K]) =>
+  const updateField = <K extends keyof SignupPayload>(key: K, value: SignupPayload[K]) =>
     setState((prev) => ({ ...prev, [key]: value }));
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -38,22 +31,19 @@ export function VintageSignup({ className }: VintageSignupProps) {
     if (submitting) return;
     setSubmitting(true);
     try {
-      const response = await fetch("/api/apply", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(state),
-      });
-      if (!response.ok) {
-        const message = await response.text().catch(() => "");
-        throw new Error(message || `Request failed (${response.status})`);
+      const result = await submitWhatsappSignup(state);
+      if (!result.ok) {
+        throw new Error(
+          result.error ?? `${sharedToast.requestFailedFallback} (${result.status || "network"})`,
+        );
       }
-      toast.success("You're on the start line.", {
-        description: "WhatsApp invite incoming by email shortly.",
+      toast.success(c.toast.success.title, {
+        description: c.toast.success.description,
       });
       setState(initialState);
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Something went wrong";
-      toast.error("Could not register", { description: message });
+      const message = error instanceof Error ? error.message : sharedToast.genericError;
+      toast.error(c.toast.error.title, { description: message });
     } finally {
       setSubmitting(false);
     }
@@ -69,36 +59,29 @@ export function VintageSignup({ className }: VintageSignupProps) {
       )}
     >
       <div className="mx-auto max-w-7xl px-5 md:px-10 grid gap-10 lg:grid-cols-12 lg:gap-16">
-        {/* Left: pitch */}
         <div className="lg:col-span-5 flex flex-col gap-6">
           <span className="inline-flex items-center gap-3 font-sans text-xs font-bold uppercase tracking-[0.32em] text-[var(--vintage-crema)]">
             <span className="inline-block h-[2px] w-7 bg-[var(--vintage-brick)]" aria-hidden />
-            Race Registration
+            {c.eyebrow}
           </span>
           <h2 className="font-varsity text-[clamp(2.5rem,6vw,5rem)] leading-[0.9] text-[var(--vintage-cream)]">
-            JOIN THE
+            {c.headlineLine1}
             <br />
-            <span className="text-[var(--vintage-brick)] vintage-ink-press">START LIST.</span>
+            <span className="text-[var(--vintage-brick)] vintage-ink-press">{c.headlineLine2}</span>
           </h2>
           <p className="font-sans text-base md:text-lg leading-relaxed text-[var(--vintage-cream)]/85 max-w-md">
-            The WhatsApp group is private — keeps it out of scrapers. We&apos;ll
-            send the invite by email after a quick check.
+            {c.description}
           </p>
           <ul className="mt-2 flex flex-col gap-2 font-sans text-sm">
-            {[
-              "Wednesdays · 07:00 · Stadhuisplein",
-              "Bring whoever you'd like to introduce",
-              "Coffee after — every time",
-            ].map((bullet) => (
+            {c.bullets.map((bullet) => (
               <li key={bullet} className="flex items-center gap-3 text-[var(--vintage-cream)]/90">
-                <span aria-hidden className="text-[var(--vintage-brick)]">★</span>
+                <span aria-hidden className="text-[var(--vintage-brick)]">{c.bulletStar}</span>
                 <span>{bullet}</span>
               </li>
             ))}
           </ul>
         </div>
 
-        {/* Right: form card */}
         <div className="lg:col-span-7">
           <form
             onSubmit={handleSubmit}
@@ -111,43 +94,46 @@ export function VintageSignup({ className }: VintageSignupProps) {
           >
             <div className="flex items-center justify-between border-b-[2px] border-[var(--vintage-cocoa-deep)]/40 pb-4 mb-6">
               <span className="font-varsity text-lg text-[var(--vintage-brick-deep)]">
-                ENTRY FORM
+                {c.formHeader}
               </span>
               <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
-                Class · Founder
+                {c.formClass}
               </span>
             </div>
 
             <Field
               id="vf-name"
               number="01"
-              label="Full Name"
+              label={c.fieldLabels.name}
+              star={c.fieldStar}
               value={state.name}
               onChange={(v) => updateField("name", v)}
               autoComplete="name"
-              placeholder="Mehdi Greefhorst"
+              placeholder={site.copy.shared.form.name.placeholder}
               required
             />
             <Field
               id="vf-email"
               number="02"
-              label="Email"
+              label={c.fieldLabels.email}
+              star={c.fieldStar}
               type="email"
               value={state.email}
               onChange={(v) => updateField("email", v)}
               autoComplete="email"
-              placeholder="you@startup.com"
+              placeholder={site.copy.shared.form.email.placeholder}
               required
             />
             <Field
               id="vf-phone"
               number="03"
-              label="Phone — for the WhatsApp invite"
+              label={c.fieldLabels.phone}
+              star={c.fieldStar}
               type="tel"
               value={state.phone}
               onChange={(v) => updateField("phone", v)}
               autoComplete="tel"
-              placeholder="+31 6 ..."
+              placeholder={site.copy.shared.form.phone.placeholder}
               required
             />
 
@@ -156,8 +142,8 @@ export function VintageSignup({ className }: VintageSignupProps) {
                 htmlFor="vf-what"
                 className="flex items-baseline justify-between mb-2 font-sans text-[0.65rem] font-bold uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]"
               >
-                <span>04 · What do you build?</span>
-                <span aria-hidden>★</span>
+                <span>04 · {c.fieldLabels.whatYouDo}</span>
+                <span aria-hidden>{c.fieldStar}</span>
               </label>
               <textarea
                 id="vf-what"
@@ -165,7 +151,7 @@ export function VintageSignup({ className }: VintageSignupProps) {
                 required
                 value={state.what_you_do}
                 onChange={(e) => updateField("what_you_do", e.target.value)}
-                placeholder="Founder of … building … for …"
+                placeholder={site.copy.shared.form.whatYouDo.placeholder}
                 className={cn(
                   "block w-full bg-transparent border-b-[2px] border-[var(--vintage-cocoa-deep)] py-2 px-0",
                   "font-display text-base text-[var(--vintage-cocoa-deep)] placeholder:text-[var(--vintage-cocoa)]/50",
@@ -188,12 +174,12 @@ export function VintageSignup({ className }: VintageSignupProps) {
                 "disabled:opacity-60 disabled:cursor-not-allowed disabled:translate-x-0 disabled:translate-y-0 disabled:shadow-[4px_4px_0_0_var(--vintage-cocoa-deep)]",
               )}
             >
-              <span aria-hidden>★</span>
-              {submitting ? "REGISTERING…" : "REGISTER ME"}
+              <span aria-hidden>{c.submitIcon}</span>
+              {submitting ? c.submit.busy : c.submit.idle}
             </button>
 
             <p className="mt-4 font-sans text-[0.7rem] uppercase tracking-[0.22em] text-[var(--vintage-cocoa)]">
-              Reviewed manually · No spam · Coffee guaranteed
+              {c.helper}
             </p>
           </form>
         </div>
@@ -206,6 +192,7 @@ interface FieldProps {
   readonly id: string;
   readonly number: string;
   readonly label: string;
+  readonly star: string;
   readonly value: string;
   readonly onChange: (v: string) => void;
   readonly type?: "text" | "email" | "tel";
@@ -218,6 +205,7 @@ function Field({
   id,
   number,
   label,
+  star,
   value,
   onChange,
   type = "text",
@@ -234,7 +222,7 @@ function Field({
         <span>
           {number} · {label}
         </span>
-        <span aria-hidden>★</span>
+        <span aria-hidden>{star}</span>
       </label>
       <input
         id={id}

@@ -12,50 +12,11 @@ const initialState: SignupPayload = {
   what_you_do: "",
 };
 
-const fields: ReadonlyArray<{
-  readonly id: keyof SignupPayload;
-  readonly label: string;
-  readonly placeholder: string;
-  readonly type: "text" | "email" | "tel" | "textarea";
-  readonly autoComplete?: string;
-  readonly hint: string;
-}> = [
-  {
-    id: "name",
-    label: "NAME",
-    placeholder: "Mehdi Greefhorst",
-    type: "text",
-    autoComplete: "name",
-    hint: "// full name",
-  },
-  {
-    id: "email",
-    label: "EMAIL",
-    placeholder: "you@startup.com",
-    type: "email",
-    autoComplete: "email",
-    hint: "// for confirmation",
-  },
-  {
-    id: "phone",
-    label: "PHONE",
-    placeholder: "+31 6 ...",
-    type: "tel",
-    autoComplete: "tel",
-    hint: "// for whatsapp invite",
-  },
-  {
-    id: "what_you_do",
-    label: "WHAT_YOU_DO",
-    placeholder: "Founder of … building … for …",
-    type: "textarea",
-    hint: "// one line is fine",
-  },
-];
-
 export function BrutalistSignup() {
   const [state, setState] = useState<SignupPayload>(initialState);
   const [submitting, setSubmitting] = useState(false);
+  const c = site.copy.landing3.signup;
+  const sharedToast = site.copy.shared.toast;
 
   const updateField = <K extends keyof SignupPayload>(key: K, value: SignupPayload[K]) =>
     setState((prev) => ({ ...prev, [key]: value }));
@@ -70,17 +31,17 @@ export function BrutalistSignup() {
 
       if (!result.ok) {
         throw new Error(
-          result.error ?? `Request failed (${result.status || "network"})`,
+          result.error ?? `${sharedToast.requestFailedFallback} (${result.status || "network"})`,
         );
       }
 
-      toast.success("ENTRY_ACCEPTED. Welcome aboard.", {
-        description: "We'll send the WhatsApp invite by email shortly.",
+      toast.success(c.toast.success.title, {
+        description: c.toast.success.description,
       });
       setState(initialState);
     } catch (error: unknown) {
-      const message = error instanceof Error ? error.message : "Something went wrong";
-      toast.error("REQUEST FAILED", { description: message });
+      const message = error instanceof Error ? error.message : sharedToast.genericError;
+      toast.error(c.toast.error.title, { description: message });
     } finally {
       setSubmitting(false);
     }
@@ -88,59 +49,55 @@ export function BrutalistSignup() {
 
   return (
     <section id="join" className="relative border-b-2 border-[var(--stamp)] bg-[var(--stamp)] text-[var(--paper)]">
-      {/* Header strip */}
       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--paper)]/20 px-6 py-2 font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[var(--paper)]/70 md:px-10">
-        <span>FILE: signup.form</span>
-        <span>METHOD: POST · supabase.fn</span>
+        <span>{c.fileLabel}</span>
+        <span>{c.method}</span>
         <span className="flex items-center gap-2">
           <span className="size-1.5 rounded-full bg-[var(--signal-green)] animate-pulse" aria-hidden />
-          STATUS: <span className="text-[var(--signal-green)]">OPEN</span>
+          {c.statusLabel} <span className="text-[var(--signal-green)]">{c.statusValue}</span>
         </span>
       </div>
 
       <div className="grid lg:grid-cols-12">
-        {/* Left: pitch */}
         <div className="lg:col-span-5 border-b-2 lg:border-b-0 lg:border-r-2 border-[var(--paper)]/20 px-6 py-12 md:px-10 md:py-16">
           <span className="inline-block border border-[var(--paper)]/40 px-2 py-1 font-mono text-[0.65rem] uppercase tracking-[0.22em] text-[var(--paper)]/80">
-            §3 / JOIN
+            {c.sectionMarker}
           </span>
 
           <h2 className="mt-6 font-mono text-4xl md:text-5xl lg:text-6xl font-bold uppercase leading-[0.95] tracking-tight">
-            <span className="block">SHOW UP.</span>
-            <span className="block">RUN.</span>
-            <span className="block text-[var(--signal-green)]">REPEAT.</span>
+            {c.headlineLines.slice(0, 2).map((line) => (
+              <span key={line} className="block">{line}</span>
+            ))}
+            <span className="block text-[var(--signal-green)]">{c.headlineLines[2]}</span>
           </h2>
 
           <p className="mt-6 max-w-md font-mono text-sm leading-relaxed text-[var(--paper)]/70">
-            <span className="text-[var(--paper)]/40">{`>`}</span> Drop your details.
-            We send the WhatsApp invite by email after a quick manual review by Mehdi.
-            No spam, no list, no nonsense.
+            <span className="text-[var(--paper)]/40">{c.pitchPromptArrow}</span> {c.pitch}
           </p>
 
           <dl className="mt-10 grid grid-cols-2 gap-x-6 gap-y-4 font-mono text-xs">
             <div className="flex flex-col gap-1">
-              <dt className="uppercase tracking-[0.22em] text-[var(--paper)]/50">When</dt>
+              <dt className="uppercase tracking-[0.22em] text-[var(--paper)]/50">{c.dlLabels.when}</dt>
               <dd>{site.nextRun.weekday} · {site.nextRun.time}</dd>
             </div>
             <div className="flex flex-col gap-1">
-              <dt className="uppercase tracking-[0.22em] text-[var(--paper)]/50">Where</dt>
+              <dt className="uppercase tracking-[0.22em] text-[var(--paper)]/50">{c.dlLabels.where}</dt>
               <dd>{site.nextRun.meetingPoint}</dd>
             </div>
             <div className="flex flex-col gap-1">
-              <dt className="uppercase tracking-[0.22em] text-[var(--paper)]/50">Distance</dt>
-              <dd>{site.nextRun.distance} <span className="text-[var(--paper)]/40">// kilometres</span></dd>
+              <dt className="uppercase tracking-[0.22em] text-[var(--paper)]/50">{c.dlLabels.distance}</dt>
+              <dd>{site.nextRun.distance} <span className="text-[var(--paper)]/40">{c.dlLabels.distanceUnit}</span></dd>
             </div>
             <div className="flex flex-col gap-1">
-              <dt className="uppercase tracking-[0.22em] text-[var(--paper)]/50">Pace</dt>
+              <dt className="uppercase tracking-[0.22em] text-[var(--paper)]/50">{c.dlLabels.pace}</dt>
               <dd>{site.nextRun.pace}</dd>
             </div>
           </dl>
         </div>
 
-        {/* Right: form */}
         <form onSubmit={handleSubmit} noValidate className="lg:col-span-7 px-6 py-12 md:px-10 md:py-16">
           <div className="flex flex-col gap-7">
-            {fields.map((field, i) => (
+            {c.fields.map((field, i) => (
               <div key={field.id} className="grid grid-cols-[2.5rem_1fr] md:grid-cols-[3rem_1fr] gap-3 items-start">
                 <span className="pt-3 font-mono text-[0.7rem] text-[var(--paper)]/30 text-right">
                   {String(i + 1).padStart(2, "0")}
@@ -151,7 +108,7 @@ export function BrutalistSignup() {
                       htmlFor={field.id}
                       className="font-mono text-[0.7rem] uppercase tracking-[0.22em] text-[var(--paper)]"
                     >
-                      <span className="text-[var(--signal-green)]">{`>`}</span> {field.label}
+                      <span className="text-[var(--signal-green)]">{c.fieldPromptArrow}</span> {field.label}
                     </label>
                     <span className="font-mono text-[0.6rem] uppercase tracking-[0.22em] text-[var(--paper)]/40">
                       {field.hint}
@@ -184,22 +141,22 @@ export function BrutalistSignup() {
             ))}
 
             <div className="grid grid-cols-[2.5rem_1fr] md:grid-cols-[3rem_1fr] gap-3 items-center pt-2">
-              <span className="font-mono text-[0.7rem] text-[var(--paper)]/30 text-right">{`>>`}</span>
+              <span className="font-mono text-[0.7rem] text-[var(--paper)]/30 text-right">{c.submitPrefix}</span>
               <button
                 type="submit"
                 disabled={submitting}
                 className="group inline-flex items-center justify-between border-2 border-[var(--signal-green)] bg-[var(--signal-green)] px-6 py-4 font-mono text-sm uppercase tracking-[0.22em] text-[var(--stamp)] transition-colors hover:bg-[var(--paper)] hover:border-[var(--paper)] disabled:opacity-50"
               >
                 <span className="flex items-center gap-3">
-                  <span aria-hidden>{`>`}</span>
-                  {submitting ? "SUBMITTING..." : "SUBMIT_REQUEST"}
+                  <span aria-hidden>{c.fieldPromptArrow}</span>
+                  {submitting ? c.submit.busy : c.submit.idle}
                 </span>
-                <span aria-hidden className="opacity-60 group-hover:opacity-100">↗</span>
+                <span aria-hidden className="opacity-60 group-hover:opacity-100">{c.submitArrow}</span>
               </button>
             </div>
 
             <p className="pl-12 md:pl-14 font-mono text-[0.7rem] uppercase tracking-[0.18em] text-[var(--paper)]/40">
-              // manual review · no list rental · no spam · ever
+              {c.helper}
             </p>
           </div>
         </form>

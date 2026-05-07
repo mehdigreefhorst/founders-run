@@ -6,12 +6,9 @@ interface VintageFooterProps {
   readonly className?: string;
 }
 
-/**
- * Vintage athletic footer — oversized varsity wordmark across the top,
- * social patches, founder credit, and an EST. SEPTEMBER colophon stamp.
- */
 export function VintageFooter({ className }: VintageFooterProps) {
   const year = new Date().getFullYear();
+  const c = site.copy.landing4.footer;
   return (
     <footer
       className={cn(
@@ -19,18 +16,17 @@ export function VintageFooter({ className }: VintageFooterProps) {
         className,
       )}
     >
-      {/* Oversized wordmark band */}
       <div className="overflow-hidden border-b-[3px] border-[var(--vintage-cocoa-deep)] bg-[var(--vintage-cream-soft)]">
         <div className="mx-auto max-w-7xl px-5 md:px-10 py-10 md:py-14">
           <div className="flex flex-col items-center text-center gap-2">
             <span className="font-sans text-[0.62rem] font-bold uppercase tracking-[0.5em] text-[var(--vintage-cocoa)]">
-              Eindhoven · Est. September
+              {c.wordmarkEyebrow}
             </span>
             <span
               className="font-varsity text-[clamp(3rem,12vw,9rem)] leading-[0.85] text-[var(--vintage-brick-deep)] vintage-ink-press"
-              aria-label="Founders Run Club"
+              aria-label={c.wordmarkAria}
             >
-              FOUNDERS · RUN · CLUB
+              {c.wordmark}
             </span>
             <span className="mt-2 font-display italic text-base md:text-lg text-[var(--vintage-cocoa-deep)]">
               {site.brand.tagline}
@@ -39,12 +35,10 @@ export function VintageFooter({ className }: VintageFooterProps) {
         </div>
       </div>
 
-      {/* Lower row */}
       <div className="mx-auto max-w-7xl px-5 md:px-10 py-10 md:py-12 grid gap-10 md:grid-cols-3 md:gap-12">
-        {/* Socials as race patches */}
         <div className="flex flex-col gap-4">
           <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
-            Patches · Follow
+            {c.patchesLabel}
           </span>
           <ul className="grid grid-cols-2 gap-3 max-w-xs">
             {site.socials.map((s) => (
@@ -70,10 +64,9 @@ export function VintageFooter({ className }: VintageFooterProps) {
           </ul>
         </div>
 
-        {/* Founder credit */}
         <div className="flex flex-col gap-3">
           <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
-            Coach
+            {c.coachLabel}
           </span>
           <a
             href={site.founder.linkedin}
@@ -91,10 +84,9 @@ export function VintageFooter({ className }: VintageFooterProps) {
           </span>
         </div>
 
-        {/* Colophon stamp */}
         <div className="flex flex-col gap-3 md:items-end md:text-right">
           <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
-            Colophon
+            {c.colophonLabel}
           </span>
           <span
             className={cn(
@@ -103,12 +95,12 @@ export function VintageFooter({ className }: VintageFooterProps) {
               "rotate-[-6deg] font-sans text-[0.6rem] font-black uppercase tracking-[0.18em] leading-tight",
             )}
           >
-            <span>EST.</span>
-            <span className="my-0.5 font-varsity text-base">SEPT</span>
-            <span>2025</span>
+            <span>{c.colophonStamp.line1}</span>
+            <span className="my-0.5 font-varsity text-base">{c.colophonStamp.line2}</span>
+            <span>{c.colophonStamp.line3}</span>
           </span>
           <span className="font-sans text-[0.65rem] uppercase tracking-[0.32em] text-[var(--vintage-cocoa-deep)]">
-            © {year} · {site.brand.domain}
+            {c.copyrightPrefix} {year} · {site.brand.domain}
           </span>
         </div>
       </div>

@@ -10,6 +10,7 @@ interface EventsSectionProps {
 }
 
 export function EventsSection({ className }: EventsSectionProps) {
+  const c = site.copy.landing1.events;
   return (
     <section
       id="events"
@@ -21,14 +22,14 @@ export function EventsSection({ className }: EventsSectionProps) {
       <div className="mx-auto max-w-7xl px-6 md:px-10">
         <Reveal>
           <SectionHeading
-            eyebrow="Events"
+            eyebrow={c.eyebrow}
             title={
               <>
-                One weekly anchor.<br />
-                <span className="text-terracotta-deep italic">A few special variations.</span>
+                {c.headlineLine1}<br />
+                <span className="text-terracotta-deep italic">{c.headlineLine2}</span>
               </>
             }
-            description="The Wednesday run is the heartbeat. Once a month or quarter we mix it up — a Sunday walk, a founders × investors run, a sponsored variant with a proper lunch after."
+            description={c.description}
           />
         </Reveal>
 

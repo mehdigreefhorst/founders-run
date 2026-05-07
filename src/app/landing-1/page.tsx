@@ -16,7 +16,7 @@ export default function LandingOne() {
   return (
     <main className="flex flex-col">
       <SiteHeader variant="transparent" />
-      <Hero media="carousel" />
+      <Hero media="video" />
       <StorySection />
       <EventsSection />
       <SignupSection />

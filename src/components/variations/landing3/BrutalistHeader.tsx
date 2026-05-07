@@ -4,30 +4,30 @@ interface BrutalistHeaderProps {
   readonly buildId: string;
 }
 
-const navItems: ReadonlyArray<{ readonly href: string; readonly label: string; readonly index: string }> = [
-  { href: "#story", label: "STORY", index: "01" },
-  { href: "#events", label: "EVENTS", index: "02" },
-  { href: "#join", label: "JOIN", index: "03" },
-];
-
 /**
- * Brutalist site header — paper background, hard black borders, mono everything.
- * Top utility bar shows build metadata; main row shows wordmark + nav + CTA.
+ * Brutalist site header — copy from `site.copy.landing3.header`.
  */
 export function BrutalistHeader({ buildId }: BrutalistHeaderProps) {
+  const c = site.copy.landing3.header;
+  const sharedNav = site.copy.shared.nav;
+
+  const navItems: ReadonlyArray<{ readonly href: string; readonly label: string; readonly index: string }> = [
+    { href: "#story", label: sharedNav.story.toUpperCase(), index: "01" },
+    { href: "#events", label: sharedNav.events.toUpperCase(), index: "02" },
+    { href: "#join", label: sharedNav.join.toUpperCase(), index: "03" },
+  ];
+
   return (
     <header className="sticky top-0 z-40 border-b-2 border-[var(--stamp)] bg-[var(--paper)]">
-      {/* Utility / metadata strip */}
       <div className="hidden md:flex items-center justify-between border-b border-[var(--stamp)]/30 px-6 py-1 font-mono text-[0.65rem] uppercase tracking-[0.18em] text-[var(--stamp)]/70">
-        <span>{`// ${site.brand.domain}`}</span>
+        <span>{`${c.domainPrefix} ${site.brand.domain}`}</span>
         <span className="flex items-center gap-2">
           <span className="inline-block size-1.5 rounded-full bg-[var(--signal-green)] animate-pulse" aria-hidden />
-          <span>SYS.OK · {buildId}</span>
+          <span>{c.statusLabel} {buildId}</span>
         </span>
         <span>{site.hero.eyebrow.toUpperCase()}</span>
       </div>
 
-      {/* Main row */}
       <div className="flex items-stretch justify-between">
         <a
           href="#top"
@@ -37,7 +37,7 @@ export function BrutalistHeader({ buildId }: BrutalistHeaderProps) {
             FR/EHV
           </span>
           <span className="font-mono text-base md:text-lg font-bold tracking-tight text-[var(--stamp)]">
-            FOUNDERS_RUN
+            {site.brand.name.toUpperCase().replace(/\s+/g, "_")}
           </span>
         </a>
 
@@ -60,8 +60,8 @@ export function BrutalistHeader({ buildId }: BrutalistHeaderProps) {
           href="#join"
           className="flex items-center gap-3 bg-[var(--stamp)] px-5 py-3 font-mono text-xs uppercase tracking-[0.22em] text-[var(--paper)] transition-colors hover:bg-[var(--signal-green)] hover:text-[var(--stamp)] md:px-7 md:text-sm"
         >
-          <span aria-hidden>{`>`}</span>
-          <span>SHOW UP</span>
+          <span aria-hidden>{c.ctaArrow}</span>
+          <span>{c.ctaShowUp}</span>
         </a>
       </div>
     </header>

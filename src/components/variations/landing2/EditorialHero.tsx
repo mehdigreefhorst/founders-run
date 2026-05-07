@@ -8,15 +8,10 @@ interface EditorialHeroProps {
 }
 
 /**
- * Editorial hero — magazine cover treatment.
- *
- * - Pure paper background
- * - Massive Fraunces display headline with tight tracking
- * - Issue / volume metadata in mono caps along the side
- * - Black & white photo block (gradient placeholder)
- * - One electric-orange accent only (subhead lead-in + CTA hover)
+ * Editorial hero — magazine cover treatment. Copy from `site.copy.landing2.hero`.
  */
 export function EditorialHero({ className }: EditorialHeroProps) {
+  const c = site.copy.landing2.hero;
   const headlineLines = site.hero.title.split("\n");
 
   return (
@@ -29,7 +24,7 @@ export function EditorialHero({ className }: EditorialHeroProps) {
       {/* Top metadata strip */}
       <div className="border-b border-editorial-rule">
         <div className="mx-auto max-w-[1400px] px-6 md:px-12 py-3 flex items-center justify-between gap-6 font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-graphite">
-          <span className="hidden sm:inline">Vol. 01 / Issue 01</span>
+          <span className="hidden sm:inline">{c.topStripVolume}</span>
           <span className="text-editorial-ink">{site.hero.eyebrow}</span>
           <span className="hidden sm:inline">{site.brand.domain}</span>
         </div>
@@ -38,17 +33,15 @@ export function EditorialHero({ className }: EditorialHeroProps) {
       {/* Main spread */}
       <div className="mx-auto max-w-[1400px] px-6 md:px-12 pt-10 md:pt-14 pb-16 md:pb-20">
         <div className="grid grid-cols-12 gap-x-6 md:gap-x-8 gap-y-10">
-          {/* Left rail — large numeral & section marker */}
           <div className="col-span-12 md:col-span-1 flex md:flex-col items-start gap-4">
             <span className="font-display text-[3rem] md:text-[4.5rem] leading-none tracking-tight text-editorial-blaze font-light">
-              01
+              {c.coverNumber}
             </span>
             <span className="md:[writing-mode:vertical-rl] md:rotate-180 font-mono text-[0.62rem] uppercase tracking-[0.32em] text-editorial-graphite">
-              The Cover Story
+              {c.coverEyebrow}
             </span>
           </div>
 
-          {/* Headline column */}
           <div className="col-span-12 md:col-span-11 lg:col-span-7 flex flex-col gap-8">
             <h1 className="font-display font-medium leading-[0.88] tracking-[-0.035em] text-balance text-[clamp(3rem,9vw,8rem)] text-editorial-ink">
               {headlineLines.map((line, i) => (
@@ -71,7 +64,7 @@ export function EditorialHero({ className }: EditorialHeroProps) {
               />
               <p className="font-sans text-base md:text-lg leading-relaxed text-editorial-graphite">
                 <span className="font-display italic text-editorial-ink not-italic font-medium uppercase tracking-[0.12em] text-[0.78rem] mr-2">
-                  Lede —
+                  {c.ledeLabel}
                 </span>
                 {site.hero.sub}
               </p>
@@ -100,7 +93,6 @@ export function EditorialHero({ className }: EditorialHeroProps) {
             </div>
           </div>
 
-          {/* Photo column (B&W placeholder) */}
           <div className="col-span-12 lg:col-span-4 lg:col-start-9 flex flex-col gap-3">
             <div
               className="relative overflow-hidden aspect-[3/4] w-full"
@@ -110,39 +102,35 @@ export function EditorialHero({ className }: EditorialHeroProps) {
               }}
             >
               <GrainOverlay />
-              {/* Caption label burned into the bottom */}
               <div className="absolute inset-x-0 bottom-0 p-5 flex items-end justify-between gap-3 z-10">
                 <span className="font-mono text-[0.6rem] uppercase tracking-[0.28em] text-white/80 max-w-[70%] leading-snug">
-                  Stadhuisplein, 06:58 — boots on, breath visible.
+                  {c.photoCaption}
                 </span>
                 <span className="font-display text-3xl text-white/95 leading-none">
-                  /01
+                  {c.photoNumber}
                 </span>
               </div>
-              {/* corner crop marks */}
               <CropMarks />
             </div>
             <div className="flex items-baseline justify-between font-mono text-[0.6rem] uppercase tracking-[0.28em] text-editorial-graphite">
-              <span>Photograph — Founders Run Eindhoven</span>
-              <span>Frame 01/06</span>
+              <span>{c.photoFooterLeft}</span>
+              <span>{c.photoFooterRight}</span>
             </div>
           </div>
         </div>
 
-        {/* Next run strip — ledger-style */}
         <div className="mt-16 md:mt-20 border-y-2 border-editorial-ink">
           <div className="grid grid-cols-2 md:grid-cols-5 divide-y md:divide-y-0 md:divide-x divide-editorial-rule">
-            <NextRunCell label="Day" value={site.nextRun.weekday} />
-            <NextRunCell label="Time" value={site.nextRun.time} accent />
-            <NextRunCell label="Meeting Point" value={site.nextRun.meetingPoint} />
-            <NextRunCell label="Distance" value={site.nextRun.distance} />
-            <NextRunCell label="Pace" value={site.nextRun.pace} />
+            <NextRunCell label={c.nextRunLabels.day} value={site.nextRun.weekday} />
+            <NextRunCell label={c.nextRunLabels.time} value={site.nextRun.time} accent />
+            <NextRunCell label={c.nextRunLabels.meetingPoint} value={site.nextRun.meetingPoint} />
+            <NextRunCell label={c.nextRunLabels.distance} value={site.nextRun.distance} />
+            <NextRunCell label={c.nextRunLabels.pace} value={site.nextRun.pace} />
           </div>
         </div>
       </div>
 
-      {/* Marquee strip — repeating brand line */}
-      <MarqueeStrip />
+      <MarqueeStrip phrase={c.marqueePhrase} />
     </section>
   );
 }
@@ -197,9 +185,7 @@ function CropMarks() {
   );
 }
 
-function MarqueeStrip() {
-  const phrase = "Founders Run · Eindhoven · Wednesdays · 07:00 · ";
-  // Render the phrase enough times to comfortably overfill any viewport.
+function MarqueeStrip({ phrase }: { phrase: string }) {
   const repeated = Array.from({ length: 12 }).map((_, i) => (
     <span key={i} className="inline-block px-6">
       {phrase}
