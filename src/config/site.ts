@@ -59,9 +59,9 @@ export const site = {
   hero: {
     eyebrow: "Eindhoven · Every Wednesday · 07:00",
     title: "Wake early.\nRun together.\nBuild something.",
-    sub: "A weekly run for founders in Eindhoven. Inspired by the morning runs that bind the founder community in San Francisco — now happening here.",
+    sub: "For founders in Eindhoven and any passing through. Build a tight community, care for your body, sharpen your mind. Healthy body, healthy mind, great founder.",
     primaryCta: { label: "Join the WhatsApp group", anchor: "#join" },
-    secondaryCta: { label: "Watch the story", anchor: "#story" },
+    secondaryCta: { label: "Read the story", anchor: "#story" },
   },
 
   // Hero video — the user wants a video on the first page.
@@ -87,19 +87,19 @@ export const site = {
       id: "spark",
       eyebrow: "September",
       title: "It started in San Francisco.",
-      body: "I went to a Founders Run there. The same simple idea: show up, run, talk. Inside thirty minutes I had three conversations I'd been chasing for months. The format works because it's quiet, repetitive, and impossible to fake.",
+      body: "I went to a Founders Run there. The same simple idea: show up, run, talk. Inside thirty minutes I had three conversations I'd been chasing for months. The format works because it's quiet, repetitive, and real.",
     },
     {
       id: "why-eindhoven",
-      eyebrow: "The gap",
-      title: "Eindhoven has events. The timing is broken.",
-      body: "The best events here happen at 11 on a Tuesday — when nobody can show up. We don't need 100,000 founders around us. We need fifty real ones. The kind you bump into often enough that introductions become trust.",
+      eyebrow: "The density",
+      title: "What San Francisco gets right.",
+      body: "In San Francisco, the magic is density — a small group of people who see each other often enough that introductions become trust. That's exactly what we're building in Eindhoven: a tight circle of founders who keep showing up for each other.",
     },
     {
       id: "why-7am",
       eyebrow: "Wednesdays · 07:00",
-      title: "07:00 is the only time that doesn't fight your calendar.",
-      body: "Meetings start at 08:30 at the earliest. So 07:00 is free, every week, forever. No rescheduling, no negotiation. Just show up. We've been doing it every Wednesday since September — sometimes two of us, sometimes eleven. It always happens.",
+      title: "07:00 fits every founder's calendar.",
+      body: "Meetings start at 08:30 at the earliest. So 07:00 fits, every week, forever. We've been running every Wednesday since September. It always happens.",
     },
   ] as const satisfies readonly StoryBeat[],
 
@@ -122,22 +122,22 @@ export const site = {
       tag: "weekly",
     },
     {
-      id: "investor",
-      title: "Founders × Investors Run",
-      cadence: "Once per quarter",
-      time: "Sunday · 10:00 · followed by lunch",
-      description:
-        "A relaxed Sunday run that pairs founders with investors who actually run. No pitches — just kilometres and conversation.",
-      tag: "special",
-    },
-    {
       id: "walk",
       title: "Founders Walk",
       cadence: "Once per month",
       time: "Sunday · 11:00 · followed by lunch",
       description:
-        "Same idea, slower pace. For people who'd rather walk and talk for an hour and meet the rest of the community.",
+        "Slower pace. An hour to walk, talk, and meet the rest of the community.",
       tag: "monthly",
+    },
+    {
+      id: "investor",
+      title: "Founders × Investors Run",
+      cadence: "Once per quarter",
+      time: "Sunday · 10:00 · followed by lunch",
+      description:
+        "A relaxed Sunday run for founders and investors who actually run. Open conversation, kilometres, and lunch after.",
+      tag: "special",
     },
   ] as const satisfies readonly EventEntry[],
 
@@ -222,7 +222,7 @@ export const site = {
           busy: "Joining…",
         },
         helper:
-          "We keep the WhatsApp group out of public reach. Mehdi reviews each request manually.",
+          "The WhatsApp group is invite-only. Mehdi reviews each request manually.",
       },
     },
 
@@ -248,7 +248,7 @@ export const site = {
         headlineLine1: "Why this exists.",
         headlineLine2: "And why it's 7am.",
         description:
-          "A short story about what San Francisco gets right, what Eindhoven is missing, and why a recurring run beats a one-off event every time.",
+          "A short story about what San Francisco gets right, why Eindhoven is ready for the same energy, and what makes a recurring 7am Wednesday work.",
       },
       events: {
         eyebrow: "Events",
@@ -262,7 +262,7 @@ export const site = {
         headlineLine1: "Sign up for",
         headlineLine2: "the WhatsApp group.",
         description:
-          "The group is private — keeps it out of scrapers and lets us actually know each other. We'll send you the invite by email after a quick check.",
+          "The group is private — for people we've actually met or talked to. We'll send you the invite by email after a quick check.",
         followLabel: "Follow along",
         founderCredit: "Built by",
         founderNote: "Started running in September. Every Wednesday since.",
@@ -309,8 +309,8 @@ export const site = {
         chapterPrefix: "Chapter",
         platePrefix: "Plate",
         figPrefix: "Fig.",
-        pullQuoteLead: "We don't need a hundred thousand founders around us.",
-        pullQuoteEmphasis: "We need fifty real ones.",
+        pullQuoteLead: "Healthy body. Healthy mind.",
+        pullQuoteEmphasis: "Great founder.",
         pullQuoteAttribSuffix: "founder",
       },
       events: {
@@ -329,7 +329,7 @@ export const site = {
         headlineLead: "Get on the",
         headlineFollow: "subscriber list.",
         description:
-          "The WhatsApp group is private — keeps it out of scrapers and lets us actually know each other. We'll send the invite by email after a quick check.",
+          "The WhatsApp group is private — for people we've actually met or talked to. We'll send the invite by email after a quick check.",
         perks: [
           {
             index: "A",
@@ -344,7 +344,7 @@ export const site = {
           {
             index: "C",
             title: "A small, real community",
-            body: "Fifty Eindhoven founders, vetted in person. No spam. No scraping.",
+            body: "Eindhoven founders who actually keep showing up. Invite-only, run by hand.",
           },
         ],
         colophonPrefix: "Founded September · Eindhoven ·",
@@ -358,7 +358,7 @@ export const site = {
         },
         submit: { idle: "Submit subscription →", busy: "Submitting…" },
         helper:
-          "We keep the WhatsApp group out of public reach. Mehdi reviews each request manually.",
+          "The WhatsApp group is invite-only. Mehdi reviews each request manually.",
       },
       footer: {
         wordmarkPart1: "Founders",
@@ -445,7 +445,7 @@ export const site = {
         headlineLines: ["SHOW UP.", "RUN.", "REPEAT."],
         pitchPromptArrow: ">",
         pitch:
-          "Drop your details. We send the WhatsApp invite by email after a quick manual review by Mehdi. No spam, no list, no nonsense.",
+          "Drop your details. We send the WhatsApp invite by email after a quick manual review by Mehdi. Real, manual, invite-only.",
         dlLabels: {
           when: "When",
           where: "Where",
@@ -490,7 +490,7 @@ export const site = {
         submit: { idle: "SUBMIT_REQUEST", busy: "SUBMITTING..." },
         submitArrow: "↗",
         submitPrefix: ">>",
-        helper: "// manual review · no list rental · no spam · ever",
+        helper: "// manual review · invite-only · run by hand",
         toast: {
           success: { title: "ENTRY_ACCEPTED. Welcome aboard.", description: "We'll send the WhatsApp invite by email shortly." },
           error: { title: "REQUEST FAILED" },
@@ -583,7 +583,7 @@ export const site = {
         headlineLine1: "JOIN THE",
         headlineLine2: "START LIST.",
         description:
-          "The WhatsApp group is private — keeps it out of scrapers. We'll send the invite by email after a quick check.",
+          "The WhatsApp group is private. We'll send the invite by email after a quick check.",
         bullets: [
           "Wednesdays · 07:00 · Stadhuisplein",
           "Bring whoever you'd like to introduce",
@@ -601,7 +601,7 @@ export const site = {
         fieldStar: "★",
         submit: { idle: "REGISTER ME", busy: "REGISTERING…" },
         submitIcon: "★",
-        helper: "Reviewed manually · No spam · Coffee guaranteed",
+        helper: "Reviewed manually · Invite-only · Coffee guaranteed",
         toast: {
           success: {
             title: "You're on the start line.",
