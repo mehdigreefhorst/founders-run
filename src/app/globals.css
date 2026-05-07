@@ -1,26 +1,264 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
+@custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+
+  --font-sans: var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono: var(--font-mono);
+  --font-heading: var(--font-display);
+
+  /* shadcn semantic tokens */
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* brand tokens (Dawn palette) */
+  --color-cream: var(--cream);
+  --color-cream-soft: var(--cream-soft);
+  --color-peach: var(--peach);
+  --color-peach-soft: var(--peach-soft);
+  --color-terracotta: var(--terracotta);
+  --color-terracotta-deep: var(--terracotta-deep);
+  --color-ember: var(--ember);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+
+  /* brutalist accent tokens (landing-3) */
+  --color-signal: var(--signal-green);
+  --color-paper: var(--paper);
+  --color-paper-soft: var(--paper-soft);
+  --color-stamp: var(--stamp);
+
+  /* editorial tokens (landing-2) */
+  --color-editorial-paper: var(--editorial-paper);
+  --color-editorial-paper-warm: var(--editorial-paper-warm);
+  --color-editorial-rule: var(--editorial-rule);
+  --color-editorial-graphite: var(--editorial-graphite);
+  --color-editorial-ink: var(--editorial-ink);
+  --color-editorial-blaze: var(--editorial-blaze);
+  --color-editorial-blaze-deep: var(--editorial-blaze-deep);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+:root {
+  /* === Dawn brand palette === */
+  --cream: oklch(0.98 0.012 80);          /* warm paper */
+  --cream-soft: oklch(0.96 0.018 75);     /* slightly warmer paper */
+  --peach: oklch(0.86 0.080 55);          /* dawn peach */
+  --peach-soft: oklch(0.92 0.045 60);     /* hazy morning */
+  --terracotta: oklch(0.68 0.140 40);     /* clay terracotta */
+  --terracotta-deep: oklch(0.55 0.155 35);/* roasted clay */
+  --ember: oklch(0.62 0.190 30);          /* sunrise ember */
+  --ink: oklch(0.22 0.025 40);            /* warm near-black */
+  --ink-soft: oklch(0.45 0.020 40);       /* warm grey */
+
+  /* === Brutalist palette (landing-3) === */
+  --paper: oklch(0.985 0.004 100);        /* near-white paper */
+  --paper-soft: oklch(0.96 0.005 100);    /* off-white panel */
+  --stamp: oklch(0.12 0 0);                /* hard near-black ink */
+  --signal-green: oklch(0.78 0.18 145);    /* matrix / signal green */
+
+  /* === Editorial palette (landing-2) — magazine, B&W + electric orange === */
+  --editorial-paper: oklch(0.99 0 0);          /* pure paper white */
+  --editorial-paper-warm: oklch(0.97 0.005 80);/* faint warm paper */
+  --editorial-rule: oklch(0.88 0 0);            /* hairline rule grey */
+  --editorial-graphite: oklch(0.55 0 0);        /* mid grey body / captions */
+  --editorial-ink: oklch(0.14 0 0);              /* near-black ink */
+  --editorial-blaze: oklch(0.68 0.22 35);       /* electric orange accent */
+  --editorial-blaze-deep: oklch(0.58 0.22 32);  /* deeper hover orange */
+
+  /* === Map shadcn semantics onto brand === */
+  --background: var(--cream);
+  --foreground: var(--ink);
+  --card: oklch(1 0 0);
+  --card-foreground: var(--ink);
+  --popover: oklch(1 0 0);
+  --popover-foreground: var(--ink);
+
+  --primary: var(--terracotta-deep);
+  --primary-foreground: var(--cream);
+  --secondary: var(--peach-soft);
+  --secondary-foreground: var(--terracotta-deep);
+  --muted: var(--cream-soft);
+  --muted-foreground: var(--ink-soft);
+  --accent: var(--peach);
+  --accent-foreground: var(--ink);
+  --destructive: oklch(0.577 0.245 27.325);
+
+  --border: oklch(0.88 0.020 60);
+  --input: oklch(0.88 0.020 60);
+  --ring: var(--terracotta);
+
+  --radius: 0.875rem;
+
+  /* charts unused but defined for shadcn compatibility */
+  --chart-1: var(--ember);
+  --chart-2: var(--terracotta);
+  --chart-3: var(--peach);
+  --chart-4: var(--ink-soft);
+  --chart-5: var(--ink);
+
+  /* sidebar tokens (unused) */
+  --sidebar: var(--cream);
+  --sidebar-foreground: var(--ink);
+  --sidebar-primary: var(--terracotta-deep);
+  --sidebar-primary-foreground: var(--cream);
+  --sidebar-accent: var(--peach-soft);
+  --sidebar-accent-foreground: var(--ink);
+  --sidebar-border: oklch(0.88 0.020 60);
+  --sidebar-ring: var(--terracotta);
+}
+
+.dark {
+  --background: oklch(0.18 0.020 35);
+  --foreground: var(--cream);
+  --card: oklch(0.22 0.022 35);
+  --card-foreground: var(--cream);
+  --popover: oklch(0.22 0.022 35);
+  --popover-foreground: var(--cream);
+  --primary: var(--peach);
+  --primary-foreground: var(--ink);
+  --secondary: oklch(0.30 0.030 35);
+  --secondary-foreground: var(--cream);
+  --muted: oklch(0.26 0.020 35);
+  --muted-foreground: oklch(0.70 0.020 60);
+  --accent: var(--terracotta);
+  --accent-foreground: var(--cream);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: var(--peach);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-feature-settings: "ss01", "cv11";
+  }
+  html {
+    @apply font-sans;
+  }
+  ::selection {
+    background: var(--terracotta);
+    color: var(--cream);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@layer utilities {
+  .font-display {
+    font-family: var(--font-display);
+    font-feature-settings: "ss01";
+  }
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Dawn gradient backgrounds */
+  .bg-dawn {
+    background: linear-gradient(
+      180deg,
+      oklch(0.94 0.045 65) 0%,
+      oklch(0.90 0.060 50) 35%,
+      oklch(0.82 0.090 40) 70%,
+      oklch(0.72 0.130 35) 100%
+    );
+  }
+  .bg-dawn-radial {
+    background: radial-gradient(
+      ellipse at 50% 90%,
+      oklch(0.78 0.150 45) 0%,
+      oklch(0.88 0.080 55) 35%,
+      oklch(0.96 0.025 70) 80%
+    );
+  }
+
+  /* Subtle paper grain */
+  .grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.95' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Reveal-on-scroll helpers (Motion handles the animation) */
+  .will-reveal {
+    will-change: transform, opacity;
+  }
+
+  /* Editorial (landing-2) — grayscale photo placeholder gradients */
+  .bg-editorial-mono-1 {
+    background: linear-gradient(135deg, oklch(0.85 0 0) 0%, oklch(0.55 0 0) 55%, oklch(0.20 0 0) 100%);
+  }
+  .bg-editorial-mono-2 {
+    background: linear-gradient(160deg, oklch(0.92 0 0) 0%, oklch(0.65 0 0) 50%, oklch(0.28 0 0) 100%);
+  }
+  .bg-editorial-mono-3 {
+    background: radial-gradient(ellipse at 30% 25%, oklch(0.88 0 0) 0%, oklch(0.45 0 0) 60%, oklch(0.16 0 0) 100%);
+  }
+  .bg-editorial-mono-4 {
+    background: linear-gradient(200deg, oklch(0.78 0 0) 0%, oklch(0.40 0 0) 60%, oklch(0.14 0 0) 100%);
+  }
+
+  /* Editorial halftone dot field — adds tactile print feel */
+  .editorial-halftone::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.18;
+    mix-blend-mode: multiply;
+    background-image: radial-gradient(oklch(0.14 0 0) 1px, transparent 1.2px);
+    background-size: 4px 4px;
+  }
+
+  /* Editorial fine paper grain (B&W) */
+  .editorial-grain::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.07;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  /* Marquee for the "every wednesday" repeating strip */
+  @keyframes editorial-marquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-50%); }
+  }
+  .editorial-marquee {
+    animation: editorial-marquee 40s linear infinite;
+  }
 }
