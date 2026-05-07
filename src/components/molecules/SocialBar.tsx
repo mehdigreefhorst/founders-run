@@ -1,6 +1,14 @@
+"use client";
+
 import { cn } from "@/lib/utils";
 import { site } from "@/config/site";
 import { SocialIcon } from "@/components/atoms/SocialIcon";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface SocialBarProps {
   readonly className?: string;
@@ -32,23 +40,31 @@ export function SocialBar({ className, variant = "icons" }: SocialBarProps) {
   }
 
   return (
-    <div className={cn("flex flex-wrap items-center gap-3", className)}>
-      {site.socials.map((s) => (
-        <a
-          key={s.id}
-          href={s.url}
-          target="_blank"
-          rel="noreferrer"
-          aria-label={`${s.label} — ${s.handle}`}
-          className={cn(
-            "inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/60 backdrop-blur px-3 py-1.5 text-sm transition-colors",
-            "hover:border-terracotta hover:text-terracotta-deep"
-          )}
-        >
-          <SocialIcon id={s.id} className="size-4" />
-          {variant === "labels" ? <span>{s.label}</span> : null}
-        </a>
-      ))}
-    </div>
+    <TooltipProvider delay={150}>
+      <div className={cn("flex flex-wrap items-center gap-3", className)}>
+        {site.socials.map((s) => (
+          <Tooltip key={s.id}>
+            <TooltipTrigger
+              render={
+                <a
+                  href={s.url}
+                  target="_blank"
+                  rel="noreferrer"
+                  aria-label={`${s.label} — ${s.handle}`}
+                  className={cn(
+                    "inline-flex items-center gap-2 rounded-full border border-border/70 bg-card/60 backdrop-blur px-3 py-1.5 text-sm transition-colors",
+                    "hover:border-terracotta hover:text-terracotta-deep",
+                  )}
+                >
+                  <SocialIcon id={s.id} className="size-4" />
+                  {variant === "labels" ? <span>{s.label}</span> : null}
+                </a>
+              }
+            />
+            <TooltipContent>{s.handle}</TooltipContent>
+          </Tooltip>
+        ))}
+      </div>
+    </TooltipProvider>
   );
 }

@@ -42,11 +42,20 @@ const PhoneIcon: IconRenderer = (props) => (
   </svg>
 );
 
+const OwowIcon: IconRenderer = (props) => (
+  <svg {...props} fill="none" stroke="currentColor" strokeWidth={1.6} strokeLinecap="round" strokeLinejoin="round">
+    <path d="M22 12a10 10 0 1 1-10-10c2.8 0 5.48 1.11 7.49 3.05L22 8" />
+    <path d="M22 3v5h-5" />
+    <path d="M12.9 2.8 L3.7 13.8 L12 13.8 L11.1 21.2 L20.3 10.2 L12 10.2 Z" fill="currentColor" stroke="none" />
+  </svg>
+);
+
 const renderers: Record<string, IconRenderer> = {
   youtube: YoutubeIcon,
   instagram: InstagramIcon,
   tiktok: TikTokIcon,
   commitify: PhoneIcon,
+  owow: OwowIcon,
 };
 
 export function SocialIcon({ id, className }: SocialIconProps) {
