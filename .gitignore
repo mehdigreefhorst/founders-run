@@ -40,3 +40,8 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# raw run videos — uploaded to Mux, not served from /public
+# Photos (.jpeg) are committed and rendered via next/image; the .mov source
+# files live only on Mux and stay out of the repo.
+public/Pictures-foundersrun/**/*.mov

@@ -42,6 +42,52 @@ export interface Founder {
   readonly linkedin: string;
 }
 
+/**
+ * Aspect ratio expressed as a CSS `aspect-ratio` value (e.g. "4/5", "16/9").
+ * Used directly in inline `style={{ aspectRatio }}` so any custom ratio works
+ * without needing a corresponding Tailwind class.
+ */
+export type GalleryAspect = "1/1" | "3/4" | "4/3" | "4/5" | "5/4" | "16/9" | "9/16" | "21/9";
+
+/**
+ * One slot in a gallery run. Either a photo (Next/Image) or a Mux clip
+ * placeholder. When `kind: "mux"` and `playbackId` is empty, the slot
+ * renders a graceful "video coming" tile with the source filename listed
+ * in the README upload checklist.
+ */
+export type GalleryItem =
+  | {
+      readonly kind: "photo";
+      readonly src: string;
+      readonly alt: string;
+      readonly aspect?: GalleryAspect;
+      readonly caption?: string;
+    }
+  | {
+      readonly kind: "mux";
+      /** Empty string until uploaded to Mux. README has the checklist. */
+      readonly playbackId: string;
+      readonly posterAlt: string;
+      readonly aspect?: GalleryAspect;
+      /** The .mov path under public/Pictures-foundersrun/ to upload to Mux. */
+      readonly source: string;
+      readonly caption?: string;
+    };
+
+/**
+ * One run-day's worth of gallery content. Renders as a sub-section inside
+ * `VintageGallery` with a race-bib eyebrow + title + grid of items.
+ */
+export interface GalleryRun {
+  readonly id: string;
+  readonly badge: string;
+  readonly label: string;
+  readonly date: string;
+  readonly location: string;
+  readonly note?: string;
+  readonly items: readonly GalleryItem[];
+}
+
 export const site = {
   brand: {
     name: "Founders Run",
@@ -77,6 +123,18 @@ export const site = {
     src: "/video/hero.mp4",
     poster: "/video/hero-poster.jpg",
     youtubeUrl: "https://www.youtube.com/@mymehdimoments",
+  },
+
+  /**
+   * Mux playback for the landing-5 hero. When `playbackId` is empty the
+   * hero falls back to the static `Poster` atom (the WhatsApp/Luma poster).
+   * Upload your hero loop to Mux and paste the public Playback ID here —
+   * see the "Mux upload checklist" section in the README.
+   */
+  heroMux: {
+    playbackId: "",
+    /** Seconds into the clip used as the still-frame poster. */
+    posterTime: 1.5,
   },
 
   // Carousel images — drop files into /public/images/run/01.jpg ... 06.jpg
@@ -147,6 +205,188 @@ export const site = {
       tag: "special",
     },
   ] as const satisfies readonly EventEntry[],
+
+  /**
+   * Date-grouped run gallery — rendered by `VintageGallery` on `/landing-5`.
+   * Files live under `public/Pictures-foundersrun/<folder>`. Mux clip slots
+   * have empty `playbackId` until the user uploads to Mux (see README).
+   * Order is reverse-chronological (newest run on top).
+   */
+  gallery: [
+    {
+      id: "ehv-2026-04-29",
+      badge: "No. 14",
+      label: "Spring stride",
+      date: "Wed 29 April 2026",
+      location: "Eindhoven",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 29 April 2026/IMG_4521.jpeg", alt: "Founders Run Eindhoven, 29 April 2026", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 29 April 2026/IMG_4522.jpeg", alt: "Founders Run Eindhoven, 29 April 2026", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 29 April 2026/IMG_4523.jpeg", alt: "Founders Run Eindhoven, 29 April 2026", aspect: "3/4" },
+      ],
+    },
+    {
+      id: "ehv-2026-04-22",
+      badge: "No. 13",
+      label: "Five-photo run",
+      date: "Wed 22 April 2026",
+      location: "Eindhoven",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 22 April 2026/IMG_4468.jpeg", alt: "Founders Run Eindhoven, 22 April 2026", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 22 April 2026/IMG_4472.jpeg", alt: "Founders Run Eindhoven, 22 April 2026", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 22 April 2026/IMG_4473.jpeg", alt: "Founders Run Eindhoven, 22 April 2026", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 22 April 2026/IMG_4474.jpeg", alt: "Founders Run Eindhoven, 22 April 2026", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 22 April 2026/IMG_4475.jpeg", alt: "Founders Run Eindhoven, 22 April 2026", aspect: "3/4" },
+      ],
+    },
+    {
+      id: "ehv-2026-04-08",
+      badge: "No. 12",
+      label: "April morning",
+      date: "Wed 8 April 2026",
+      location: "Eindhoven",
+      items: [
+        { kind: "mux", playbackId: "", posterAlt: "8 April 2026 run clip", aspect: "9/16", source: "Eindhoven, 8 April 2026/IMG_4279.mov" },
+      ],
+    },
+    {
+      id: "ehv-2026-03-04",
+      badge: "No. 11",
+      label: "March return",
+      date: "Wed 4 March 2026",
+      location: "Eindhoven",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 4 March 2026/IMG_4096.jpeg", alt: "Founders Run Eindhoven, 4 March 2026", aspect: "3/4" },
+        { kind: "mux", playbackId: "", posterAlt: "4 March 2026 run clip", aspect: "9/16", source: "Eindhoven, 4 March 2026/IMG_4097.mov" },
+      ],
+    },
+    {
+      id: "ehv-2026-02-25",
+      badge: "No. 10",
+      label: "Late winter",
+      date: "Wed 25 February 2026",
+      location: "Eindhoven",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 25 February 2026/IMG_4073.jpeg", alt: "Founders Run Eindhoven, 25 February 2026", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 25 February 2026/IMG_4074.jpeg", alt: "Founders Run Eindhoven, 25 February 2026", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 25 February 2026/IMG_4075.jpeg", alt: "Founders Run Eindhoven, 25 February 2026", aspect: "3/4" },
+      ],
+    },
+    {
+      id: "ehv-2026-01-21",
+      badge: "No. 09",
+      label: "Mid-winter",
+      date: "Wed 21 January 2026",
+      location: "Eindhoven",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 21 January 2026/IMG_3806.jpeg", alt: "Founders Run Eindhoven, 21 January 2026", aspect: "3/4" },
+      ],
+    },
+    {
+      id: "ehv-2026-01-07",
+      badge: "No. 08",
+      label: "First run of the year",
+      date: "Wed 7 January 2026",
+      location: "Eindhoven",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 7 January 2026/IMG_3673.jpeg", alt: "First run of 2026, Eindhoven", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 7 January 2026/IMG_3675.jpeg", alt: "First run of 2026, Eindhoven", aspect: "3/4" },
+        { kind: "mux", playbackId: "", posterAlt: "7 January 2026 run clip", aspect: "9/16", source: "Eindhoven, 7 January 2026/IMG_3674.mov" },
+      ],
+    },
+    {
+      id: "ehv-2025-12-17",
+      badge: "No. 07",
+      label: "Pre-Christmas",
+      date: "Wed 17 December 2025",
+      location: "Eindhoven",
+      items: [
+        { kind: "mux", playbackId: "", posterAlt: "17 December 2025 run clip", aspect: "9/16", source: "Eindhoven, 17 December 2025/IMG_3480.mov" },
+      ],
+    },
+    {
+      id: "ehv-2025-11-26",
+      badge: "No. 06",
+      label: "Late November",
+      date: "Wed 26 November 2025",
+      location: "Eindhoven",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 26 November 2025/IMG_3266.jpeg", alt: "Founders Run Eindhoven, 26 November 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 26 November 2025/IMG_3270.jpeg", alt: "Founders Run Eindhoven, 26 November 2025", aspect: "3/4" },
+        { kind: "mux", playbackId: "", posterAlt: "26 November 2025 run clip", aspect: "9/16", source: "Eindhoven, 26 November 2025/IMG_3260.mov" },
+      ],
+    },
+    {
+      id: "ehv-2025-11-12",
+      badge: "No. 05",
+      label: "Mid-November",
+      date: "Wed 12 November 2025",
+      location: "Eindhoven",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 12 November 2025/IMG_3090.jpeg", alt: "Founders Run Eindhoven, 12 November 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 12 November 2025/IMG_3091.jpeg", alt: "Founders Run Eindhoven, 12 November 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Eindhoven, 12 November 2025/IMG_3092.jpeg", alt: "Founders Run Eindhoven, 12 November 2025", aspect: "3/4" },
+        { kind: "mux", playbackId: "", posterAlt: "12 November 2025 run clip", aspect: "9/16", source: "Eindhoven, 12 November 2025/IMG_3093.mov" },
+      ],
+    },
+    {
+      id: "ehv-2025-10-22",
+      badge: "No. 04",
+      label: "Late October",
+      date: "Wed 22 October 2025",
+      location: "Eindhoven",
+      items: [
+        { kind: "mux", playbackId: "", posterAlt: "22 October 2025 run clip", aspect: "9/16", source: "Eindhoven, 22 October 2025/IMG_2954.mov" },
+      ],
+    },
+    {
+      id: "ehv-2025-10-15",
+      badge: "No. 03",
+      label: "Mid-October",
+      date: "Wed 15 October 2025",
+      location: "Eindhoven",
+      items: [
+        { kind: "mux", playbackId: "", posterAlt: "15 October 2025 run clip", aspect: "9/16", source: "Eindhoven, 15 October 2025/IMG_2883.mov" },
+      ],
+    },
+    {
+      id: "bas-de-beer",
+      badge: "FT.",
+      label: "Photos by Bas de Beer",
+      date: "Captured spring 2026",
+      location: "Eindhoven",
+      note: "A small set shot by Bas during one of the morning runs.",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/Pictures-bas-de-beer/WhatsApp Image 2026-05-08 at 11.53.59.jpeg", alt: "Founders Run morning, photo by Bas de Beer", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Pictures-bas-de-beer/WhatsApp Image 2026-05-08 at 11.53.59 (1).jpeg", alt: "Founders Run morning, photo by Bas de Beer", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Pictures-bas-de-beer/WhatsApp Image 2026-05-08 at 11.53.59 (2).jpeg", alt: "Founders Run morning, photo by Bas de Beer", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Pictures-bas-de-beer/WhatsApp Image 2026-05-08 at 11.54.00.jpeg", alt: "Founders Run morning, photo by Bas de Beer", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/Pictures-bas-de-beer/WhatsApp Image 2026-05-08 at 11.54.01.jpeg", alt: "Founders Run morning, photo by Bas de Beer", aspect: "3/4" },
+      ],
+    },
+    {
+      id: "first-edition",
+      badge: "VOL. 01",
+      label: "First edition",
+      date: "Wed 17 September 2025",
+      location: "WoensXL · Eindhoven",
+      note: "Where it all started.",
+      items: [
+        { kind: "photo", src: "/Pictures-foundersrun/WoensXL, 17 September 2025/IMG_5045.jpeg", alt: "First Founders Run, WoensXL Eindhoven, 17 September 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/WoensXL, 17 September 2025/IMG_5046.jpeg", alt: "First Founders Run, WoensXL Eindhoven, 17 September 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/WoensXL, 17 September 2025/IMG_5047.jpeg", alt: "First Founders Run, WoensXL Eindhoven, 17 September 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/WoensXL, 17 September 2025/IMG_5049.jpeg", alt: "First Founders Run, WoensXL Eindhoven, 17 September 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/WoensXL, 17 September 2025/IMG_5050.jpeg", alt: "First Founders Run, WoensXL Eindhoven, 17 September 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/WoensXL, 17 September 2025/IMG_5054.jpeg", alt: "First Founders Run, WoensXL Eindhoven, 17 September 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/WoensXL, 17 September 2025/IMG_5055.jpeg", alt: "First Founders Run, WoensXL Eindhoven, 17 September 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/WoensXL, 17 September 2025/IMG_5056.jpeg", alt: "First Founders Run, WoensXL Eindhoven, 17 September 2025", aspect: "3/4" },
+        { kind: "photo", src: "/Pictures-foundersrun/16 September 2025/IMG_2679.jpeg", alt: "Day before the first Founders Run, Eindhoven, 16 September 2025", aspect: "3/4" },
+        { kind: "mux", playbackId: "", posterAlt: "DJI drone footage of the first run, WoensXL", aspect: "16/9", source: "WoensXL, 17 September 2025/dji_export_20250917_092222_1758093742132_compose_0.mov" },
+        { kind: "mux", playbackId: "", posterAlt: "DJI drone footage of the first run", aspect: "16/9", source: "17 September 2025/dji_export_20250917_092508_1758093908990_compose_0.mov" },
+        { kind: "mux", playbackId: "", posterAlt: "Founders running group, first edition", aspect: "16/9", source: "WoensXL, 17 September 2025/Founders running group first edition.mov" },
+      ],
+    },
+  ] as const satisfies readonly GalleryRun[],
 
   socials: [
 
@@ -392,6 +632,21 @@ export const site = {
         colophonLabel: "Colophon",
         colophonStamp: { line1: "EST.", line2: "SEPT", line3: "2025" },
         copyrightPrefix: "©",
+      },
+    },
+
+    landing5: {
+      gallery: {
+        eyebrow: "The Film Roll",
+        headlineLine1: "EVERY",
+        headlineLine2: "WEDNESDAY.",
+        description:
+          "A scrap-book of every Wednesday morning since September 2025 — phones up, drone overhead, coffee after.",
+        runEyebrowPrefix: "RUN",
+        clipChip: "▶ FILM",
+        clipPlaceholder: "Clip coming soon",
+        clipSourcePrefix: "src ·",
+        photoChip: "PHOTO",
       },
     },
   },

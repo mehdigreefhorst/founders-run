@@ -147,9 +147,53 @@ supabase functions serve save_whatsapp_group_application \
 
 ## Brand assets
 
-- **`public/logo-luma-founders-run.jpeg`** — the official illustrated poster used on every Luma event and the WhatsApp group. Featured prominently on `/landing-4`.
+- **`public/logo-luma-founders-run.jpeg`** — the official illustrated poster used on every Luma event and the WhatsApp group. Featured prominently on `/landing-4` and used as the hero fallback on `/landing-5`.
 - **`public/video/hero.mp4`** — hero video used on `/landing-1`. ~38 MB; consider Vercel Blob or a CDN if this grows.
+- **`public/Pictures-foundersrun/`** — date-organised run photos and `.mov` clips. The photos render directly on `/landing-5`'s "Film Roll" gallery; the `.mov` clips need to go through Mux (see next section).
 - **`public/images/run/01.jpg`–`06.jpg`** — placeholder run photo slots (the carousel falls back to gradient placeholders if the files are missing).
+
+## Mux upload checklist (`/landing-5`)
+
+`/landing-5` streams videos from [Mux](https://mux.com) via `@mux/mux-player-react`. Until you upload the clips below to Mux and paste their **public Playback IDs** into `src/config/site.ts`, each video slot renders a labelled "Clip coming soon" tile so the layout still works.
+
+### How to add a clip
+
+1. Drop the source `.mov` into the Mux dashboard's video upload page.
+2. When the asset is `ready`, copy the **public Playback ID** (not the Asset ID).
+3. Paste it into the matching slot in `site.ts` (the `source` field on each `mux` item names the source file so you can match them up at a glance).
+4. Commit + deploy. The placeholder tile flips to a click-to-play Mux player automatically.
+
+### Slots to fill
+
+#### Hero loop
+
+Drives the loop inside the bordered poster frame on `/landing-5`. Falls back to the static Luma poster while empty.
+
+| Field | Source `.mov` to upload |
+|---|---|
+| `site.heroMux.playbackId` | _your call — pick the most-cinematic 5–15s loop, e.g. one of the WoensXL drone clips_ |
+
+#### Gallery clips
+
+Each slot lives at `site.gallery[i].items[j]` where the matching `source` field is shown in the `Source .mov` column.
+
+| Date | Source `.mov` to upload |
+|---|---|
+| Wed 8 April 2026 | `Eindhoven, 8 April 2026/IMG_4279.mov` |
+| Wed 4 March 2026 | `Eindhoven, 4 March 2026/IMG_4097.mov` |
+| Wed 7 January 2026 | `Eindhoven, 7 January 2026/IMG_3674.mov` |
+| Wed 17 December 2025 | `Eindhoven, 17 December 2025/IMG_3480.mov` |
+| Wed 26 November 2025 | `Eindhoven, 26 November 2025/IMG_3260.mov` |
+| Wed 12 November 2025 | `Eindhoven, 12 November 2025/IMG_3093.mov` |
+| Wed 22 October 2025 | `Eindhoven, 22 October 2025/IMG_2954.mov` |
+| Wed 15 October 2025 | `Eindhoven, 15 October 2025/IMG_2883.mov` |
+| First edition (drone A) | `WoensXL, 17 September 2025/dji_export_20250917_092222_1758093742132_compose_0.mov` |
+| First edition (drone B) | `17 September 2025/dji_export_20250917_092508_1758093908990_compose_0.mov` |
+| First edition (group) | `WoensXL, 17 September 2025/Founders running group first edition.mov` |
+
+> **Heads up**: only the picked "headline" clip per date is wired in. There are extra unwired `.mov` files in `public/Pictures-foundersrun/` (4 more on 22 Oct, 8 more on 26 Nov, 2 more on 7 Jan, 2 more on 12 Nov) — add them as additional gallery items in `site.ts` if you want them in the Film Roll too.
+>
+> Public Playback IDs are safe to commit. We're using public playback (not signed) because the content is already on Instagram and TikTok — there's nothing to gate.
 
 ## Socials
 

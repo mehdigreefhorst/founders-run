@@ -27,6 +27,13 @@ const variants: ReadonlyArray<VariantEntry> = [
       "Built around the Founders Run × Coffee Luma poster as the full-bleed hero centerpiece. Cream + brick + cocoa palette, varsity Bungee Inline display, merit-badge event cards, race-bib registration form.",
     status: "ready",
   },
+  {
+    slug: "/landing-5",
+    title: "Production candidate · Vintage + video + film roll",
+    description:
+      "Vintage Athletic look with the hero poster swapped for a Mux-streamed loop, plus a date-grouped 'Film Roll' gallery mixing every Wednesday's photos and clips since September 2025.",
+    status: "ready",
+  },
 ];
 
 export default function VariantIndex() {

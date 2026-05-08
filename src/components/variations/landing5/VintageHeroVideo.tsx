@@ -1,0 +1,149 @@
+import { cn } from "@/lib/utils";
+import { site } from "@/config/site";
+import { PosterMux } from "@/components/molecules/PosterMux";
+
+interface VintageHeroVideoProps {
+  readonly className?: string;
+}
+
+/**
+ * Landing-5 hero — same structure as the landing-4 VintageHero but the
+ * static poster slot is replaced by `PosterMux`. The bordered frame, the
+ * `✶ EHV` corner stamp, and the bottom captions all stay so the visual
+ * identity is unchanged when Mux is unconfigured (it falls back to the
+ * static poster image).
+ */
+export function VintageHeroVideo({ className }: VintageHeroVideoProps) {
+  const c = site.copy.landing4.hero;
+
+  const sourceMap: Record<typeof c.nextRun.fields[number]["source"], string> = {
+    weekday: site.nextRun.weekday,
+    time: site.nextRun.time,
+    distance: site.nextRun.distance,
+  };
+
+  return (
+    <section
+      className={cn(
+        "relative isolate overflow-hidden bg-[var(--vintage-cream)] vintage-paper",
+        className,
+      )}
+      id="top"
+    >
+      <div className="mx-auto grid max-w-7xl gap-10 px-5 pt-12 pb-16 md:grid-cols-12 md:gap-12 md:px-10 md:pt-16 md:pb-24 lg:pt-20 lg:pb-28">
+        <div className="md:col-span-7 lg:col-span-7 flex flex-col gap-6">
+          <div className="flex items-center gap-4 font-sans text-[0.7rem] uppercase tracking-[0.32em] text-[var(--vintage-cocoa)]">
+            <span>{c.volume}</span>
+            <span aria-hidden className="h-px flex-1 bg-[var(--vintage-cocoa)]/40" />
+            <span>{site.brand.location.toUpperCase()}</span>
+          </div>
+
+          <h1 className="flex flex-col gap-1 leading-[0.85] tracking-tight text-[var(--vintage-brick-deep)]">
+            <span className="font-varsity text-[clamp(3.25rem,11vw,8.5rem)] vintage-ink-press">
+              {c.headlineLine1}
+            </span>
+            <span className="font-varsity text-[clamp(3.25rem,11vw,8.5rem)] vintage-ink-press">
+              {c.headlineLine2}
+            </span>
+            <span className="mt-3 inline-flex items-center gap-3 font-display text-[clamp(1rem,2.4vw,1.5rem)] italic font-medium leading-none text-[var(--vintage-cocoa-deep)]">
+              <span aria-hidden className="block h-px w-8 bg-[var(--vintage-cocoa-deep)]" />
+              {c.headlineSlogan}
+              <span aria-hidden className="block h-px w-8 bg-[var(--vintage-cocoa-deep)]" />
+            </span>
+          </h1>
+
+          <p className="max-w-xl font-sans text-base md:text-lg leading-relaxed text-[var(--vintage-cocoa-deep)]">
+            {site.hero.sub}
+          </p>
+
+          <div className="flex flex-wrap items-center gap-4 pt-2">
+            <a
+              href={site.hero.primaryCta.anchor}
+              className={cn(
+                "inline-flex items-center gap-3 rounded-sm px-6 py-3.5",
+                "border-[3px] border-[var(--vintage-cocoa-deep)] bg-[var(--vintage-brick)] text-[var(--vintage-cream)]",
+                "font-sans text-sm font-bold uppercase tracking-[0.22em]",
+                "shadow-[4px_4px_0_0_var(--vintage-cocoa-deep)] transition-all",
+                "hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0_0_var(--vintage-cocoa-deep)]",
+                "active:translate-x-[4px] active:translate-y-[4px] active:shadow-none",
+              )}
+            >
+              <span aria-hidden>{c.ctaPrimaryIcon}</span>
+              {site.hero.primaryCta.label.toUpperCase()}
+            </a>
+            <a
+              href={site.hero.secondaryCta.anchor}
+              className={cn(
+                "inline-flex items-center gap-2 rounded-sm border-[2px] border-[var(--vintage-cocoa-deep)] bg-transparent px-5 py-3",
+                "font-sans text-sm font-bold uppercase tracking-[0.22em] text-[var(--vintage-cocoa-deep)]",
+                "transition-colors hover:bg-[var(--vintage-cocoa-deep)] hover:text-[var(--vintage-cream)]",
+              )}
+            >
+              <span aria-hidden>{c.ctaSecondaryIcon}</span>
+              {c.ctaSecondaryLabel}
+            </a>
+          </div>
+
+          <div className="mt-6 overflow-hidden rounded-sm border-[3px] border-[var(--vintage-cocoa-deep)] bg-[var(--vintage-cream-soft)]">
+            <div className="grid grid-cols-2 lg:grid-cols-4">
+              <div className="col-span-2 lg:col-span-1 flex items-center justify-center bg-[var(--vintage-brick-deep)] px-4 py-3 text-[var(--vintage-cream)]">
+                <div className="flex flex-col items-center leading-none">
+                  <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.32em]">
+                    {c.nextRun.eyebrow}
+                  </span>
+                  <span className="mt-1 font-varsity text-lg">{c.nextRun.label}</span>
+                </div>
+              </div>
+              {c.nextRun.fields.map((field, i) => {
+                const value = field.uppercase ? sourceMap[field.source].toUpperCase() : sourceMap[field.source];
+                return (
+                  <div
+                    key={field.label}
+                    className={cn(
+                      "flex min-w-0 flex-col items-start justify-center gap-1 px-4 py-3 lg:py-4",
+                      "border-dashed border-[var(--vintage-cocoa-deep)]/30",
+                      "border-t-[2px] lg:border-t-0 lg:border-l-[2px]",
+                      i % 2 === 1 ? "border-l-[2px]" : "",
+                    )}
+                  >
+                    <span className="font-sans text-[0.6rem] font-bold uppercase tracking-[0.28em] text-[var(--vintage-cocoa)]">
+                      {field.label}
+                    </span>
+                    <span className="font-display text-sm font-bold leading-tight text-[var(--vintage-cocoa-deep)] break-words md:text-base lg:text-base">
+                      {value}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </div>
+
+        <div className="md:col-span-5 lg:col-span-5">
+          <div
+            className={cn(
+              "relative mx-auto max-w-md overflow-hidden rounded-sm border-[4px] border-[var(--vintage-cocoa-deep)] bg-[var(--vintage-cream)]",
+              "shadow-[8px_8px_0_0_var(--vintage-brick-deep)] md:shadow-[12px_12px_0_0_var(--vintage-brick-deep)]",
+            )}
+          >
+            <PosterMux
+              playbackId={site.heroMux.playbackId}
+              posterTime={site.heroMux.posterTime}
+              className="block w-full"
+            />
+            <span
+              aria-hidden
+              className="absolute -top-3 -right-3 inline-flex h-12 w-12 items-center justify-center rounded-full border-[3px] border-[var(--vintage-cocoa-deep)] bg-[var(--vintage-brick)] font-sans text-[0.55rem] font-bold uppercase tracking-[0.15em] text-[var(--vintage-cream)]"
+            >
+              {c.posterStamp}
+            </span>
+            <span className="pointer-events-none absolute bottom-2 left-3 right-3 z-10 flex items-center justify-between font-sans text-[0.55rem] font-bold uppercase tracking-[0.22em] text-[var(--vintage-cocoa-deep)]/80">
+              <span>{c.posterCaptionLeft}</span>
+              <span>{c.posterCaptionRight}</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
